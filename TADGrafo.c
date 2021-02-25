@@ -1,19 +1,5 @@
 #include "TADGrafo.h"
 
-/*
-typedef struct verticeVizinho{
-    int id;
-    int pesoAresta;
-    struct verticeVizinho* proximoVizinho;
-}VerticeVizinho;
-
-typedef struct verticeGrafo{
-    int id;
-    VerticeVizinho* verticeVizinho;
-    struct verticeGrafo* proximoVerticeGrafo;
-}VerticeGrafo;
-*/
-
 VerticeGrafo* criarGrafo(){
     return NULL;
 }
@@ -110,15 +96,117 @@ int inserirAresta(VerticeGrafo* grafo, int idVerticeOrigem, int idVerticeDestino
     return OK;
 }
 
-void apagarGrafo(VerticeGrafo* grafo){}
+void deletarGrafo(VerticeGrafo* grafo){
+    while(grafo != NULL){
+        grafo = deletarVertice(grafo, grafo->id);
+    }
+}
 
-VerticeGrafo* deletarVertice(VerticeGrafo* grafo, int idVertice){return NULL;}
+VerticeGrafo* deletarVertice(VerticeGrafo* grafo, int idVertice){
+
+    printf("deletarVertice(idVertice=%d)\n", idVertice);
+
+    if(!verticeEstaGrafo(grafo, idVertice)){
+        return grafo;
+    }
+
+    //Apagar todos os VerticeVizinho com id == idVertice
+    VerticeGrafo* verticeGrafoAtual = grafo;
+    VerticeVizinho* vizinhoAtual = NULL;
+    VerticeVizinho* vizinhoAnterior = NULL;
+    while(verticeGrafoAtual != NULL){
+        vizinhoAtual = verticeGrafoAtual->verticeVizinho;
+        vizinhoAnterior = NULL;
+        while(vizinhoAtual != NULL){
+            if(vizinhoAtual->id == idVertice){
+                deletarAresta(grafo, verticeGrafoAtual->id, idVertice);
+                
+                if(vizinhoAnterior == NULL){
+                    vizinhoAtual = verticeGrafoAtual->verticeVizinho;
+                }
+                else{
+                    vizinhoAtual = vizinhoAnterior->proximoVizinho;
+                }
+            }
+            else{
+                vizinhoAnterior = vizinhoAtual;
+                vizinhoAtual = vizinhoAtual->proximoVizinho;
+            }
+        }
+        verticeGrafoAtual = verticeGrafoAtual->proximoVerticeGrafo;
+    }
+
+    //Apagar VerticeGrafo com id == idVertice
+    VerticeGrafo* verticeSeraApagado = grafo;
+    VerticeGrafo* verticeAnterior = NULL;
+    while(verticeSeraApagado != NULL){
+        if(verticeSeraApagado->id == idVertice){
+            //Apagando todas as arestas que tem origem em "verticeSeraApagado"
+            while(verticeSeraApagado->verticeVizinho != NULL){
+                deletarAresta(grafo, idVertice, verticeSeraApagado->verticeVizinho->id);
+            }
+
+            //Apagando VerticeGrafo com id == idVertice
+            if(verticeAnterior == NULL){
+                grafo = verticeSeraApagado->proximoVerticeGrafo;
+            }
+            else{
+                verticeAnterior->proximoVerticeGrafo = verticeSeraApagado->proximoVerticeGrafo;
+            }
+            free(verticeSeraApagado);
+        }
+        verticeAnterior = verticeSeraApagado;
+        verticeSeraApagado = verticeSeraApagado->proximoVerticeGrafo;
+    }
+
+    return grafo;
+}
 
 //Não é necessário retornar o grafo atualizado pois para deletar uma aresta
 //é necessário que o grafo já possua pelo menos um vértice. Assim, as alterações
 //feitas já poderão ser acessadas a partir da variável "grafo" passada por parâmetro
 //para esse procedimento
-void deletarAresta(VerticeGrafo* grafo,  int idVerticeOrigem, int idVerticeDestino){}
+void deletarAresta(VerticeGrafo* grafo,  int idVerticeOrigem, int idVerticeDestino){
+
+    printf("deletarAresta(idVerticeOrigem=%d, idVerticeDestino=%d\n", idVerticeOrigem, idVerticeDestino);
+
+
+    if(!verticeEstaGrafo(grafo, idVerticeOrigem) || !verticeEstaGrafo(grafo, idVerticeDestino)
+    || !arestaEstaGrafo(grafo, idVerticeOrigem, idVerticeDestino)){
+        return;
+    }
+
+    //Buscando vértice de origem
+    //Já foi verificado que ele se encontra no grafo
+    VerticeGrafo* verticeOrigem = grafo;
+    VerticeVizinho* verticeDestino = NULL;
+    VerticeVizinho* verticeVizinhoAnterior = NULL;
+    while(verticeOrigem != NULL){
+        if(verticeOrigem->id == idVerticeOrigem){
+            verticeDestino = verticeOrigem->verticeVizinho;
+            break;
+        }
+        verticeOrigem = verticeOrigem->proximoVerticeGrafo;
+    }
+
+    //Buscando vértice de destino
+    //Já foi verificado que ele se encontra no grafo
+    while(verticeDestino != NULL){
+        if(verticeDestino->id == idVerticeDestino){
+            if(verticeVizinhoAnterior == NULL){
+                verticeOrigem->verticeVizinho = verticeDestino->proximoVizinho;
+            }
+            else{
+                verticeVizinhoAnterior->proximoVizinho = verticeDestino->proximoVizinho;
+            }
+
+            free(verticeDestino);
+            return;
+        }
+        verticeVizinhoAnterior = verticeDestino;
+        verticeDestino = verticeDestino->proximoVizinho;
+    }
+}
 
 //DEBUG!!!!!!!!!!!!!!!!!!!!!!!!!
 void imprimirGrafo(VerticeGrafo* grafo){

@@ -32,7 +32,7 @@ int arestaEstaGrafo(VerticeGrafo* grafo, int idVerticeOrigem, int idVerticeDesti
 //para esse procedimento
 int inserirAresta(VerticeGrafo* grafo, int idVerticeOrigem, int idVerticeDestino, int pesoAresta);
 
-void apagarGrafo(VerticeGrafo* grafo);
+void deletarGrafo(VerticeGrafo* grafo);
 
 VerticeGrafo* deletarVertice(VerticeGrafo* grafo, int idVertice);
 
