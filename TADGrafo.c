@@ -103,9 +103,6 @@ void deletarGrafo(VerticeGrafo* grafo){
 }
 
 VerticeGrafo* deletarVertice(VerticeGrafo* grafo, int idVertice){
-
-    printf("deletarVertice(idVertice=%d)\n", idVertice);
-
     if(!verticeEstaGrafo(grafo, idVertice)){
         return grafo;
     }
@@ -167,10 +164,6 @@ VerticeGrafo* deletarVertice(VerticeGrafo* grafo, int idVertice){
 //feitas já poderão ser acessadas a partir da variável "grafo" passada por parâmetro
 //para esse procedimento
 void deletarAresta(VerticeGrafo* grafo,  int idVerticeOrigem, int idVerticeDestino){
-
-    printf("deletarAresta(idVerticeOrigem=%d, idVerticeDestino=%d\n", idVerticeOrigem, idVerticeDestino);
-
-
     if(!verticeEstaGrafo(grafo, idVerticeOrigem) || !verticeEstaGrafo(grafo, idVerticeDestino)
     || !arestaEstaGrafo(grafo, idVerticeOrigem, idVerticeDestino)){
         return;
