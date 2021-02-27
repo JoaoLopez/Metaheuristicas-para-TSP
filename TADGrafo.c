@@ -63,7 +63,7 @@ int arestaEstaGrafo(VerticeGrafo* grafo, int idVerticeOrigem, int idVerticeDesti
 //é necessário que o grafo já possua pelo menos um vértice. Assim, as alterações
 //feitas já poderão ser acessadas a partir da variável "grafo" passada por parâmetro
 //para esse procedimento
-int inserirAresta(VerticeGrafo* grafo, int idVerticeOrigem, int idVerticeDestino, int pesoAresta){
+int inserirAresta(VerticeGrafo* grafo, int idVerticeOrigem, int idVerticeDestino, double pesoAresta){
     if(!verticeEstaGrafo(grafo, idVerticeOrigem) || !verticeEstaGrafo(grafo, idVerticeDestino)){
         return ERRO_VERTICE_NAO_ENCONTRADO;
     }
@@ -213,7 +213,7 @@ void imprimirGrafo(VerticeGrafo* grafo){
         printf("%d", grafoAuxiliar->id);
         vizinhoAuxiliar = grafoAuxiliar->verticeVizinho;
         while(vizinhoAuxiliar != NULL){
-            printf("-%d(%d)", vizinhoAuxiliar->id, vizinhoAuxiliar->pesoAresta);
+            printf("-%d(%lf)", vizinhoAuxiliar->id, vizinhoAuxiliar->pesoAresta);
             vizinhoAuxiliar = vizinhoAuxiliar->proximoVizinho;
         }
         grafoAuxiliar = grafoAuxiliar->proximoVerticeGrafo;

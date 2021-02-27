@@ -1,9 +1,11 @@
 #ifndef TADTOUR_H
 #define TADTOUR_H
 
-typedef struct verticeTour{
+typedef struct noTour{
     int id;
-    struct verticeTour* proximoVerticeTour;
-}VerticeTour;
+    struct noTour* proximoNoTour;
+}NoTour;
+
+void deletarTour(NoTour* tour);
 
 #endif

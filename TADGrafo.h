@@ -8,7 +8,7 @@
 
 typedef struct verticeVizinho{
     int id;
-    int pesoAresta;
+    double pesoAresta;
     struct verticeVizinho* proximoVizinho;
 }VerticeVizinho;
 
@@ -30,7 +30,7 @@ int arestaEstaGrafo(VerticeGrafo* grafo, int idVerticeOrigem, int idVerticeDesti
 //é necessário que o grafo já possua pelo menos um vértice. Assim, as alterações
 //feitas já poderão ser acessadas a partir da variável "grafo" passada por parâmetro
 //para esse procedimento
-int inserirAresta(VerticeGrafo* grafo, int idVerticeOrigem, int idVerticeDestino, int pesoAresta);
+int inserirAresta(VerticeGrafo* grafo, int idVerticeOrigem, int idVerticeDestino, double pesoAresta);
 
 void deletarGrafo(VerticeGrafo* grafo);
 
