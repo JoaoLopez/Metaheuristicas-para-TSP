@@ -11,7 +11,7 @@ InstanciaTSP* criarInstanciaTSP(char* pathArquivoTSP, int* statusOperacao){
     //Alocando memória para a instância de TSP
     InstanciaTSP* instanciaTSP = (InstanciaTSP*) malloc(sizeof(InstanciaTSP));
     instanciaTSP->nome = (char*) malloc(20*sizeof(char));
-    instanciaTSP->comentario = (char*) malloc(30*sizeof(char));
+    instanciaTSP->comentario = (char*) malloc(50*sizeof(char));
     instanciaTSP->tipo = (char*) malloc(4*sizeof(char));
     instanciaTSP->tipoPesoAresta = (char*) malloc(7*sizeof(char));
     
@@ -133,12 +133,17 @@ InstanciaTSP* criarInstanciaTSP(char* pathArquivoTSP, int* statusOperacao){
                 ponto2 = vetorPontos[j];
                 distancia = calcularDistanciaPontos(ponto1, ponto2);
 
+                /////////////////////////DEBUG////////////////////////////
                 printf("i, j, distancia: %d, %d, %lf\n", i, j, distancia);
+                //////////////////////////////////////////////////////////
 
                 *statusOperacao = inserirAresta(instanciaTSP->grafo, i+1, j+1, distancia);
                 if(*statusOperacao != OK){
                     if(*statusOperacao != ERRO_MEMORIA_INSUFICIENTE){
-                        printf("*statusOperacao = %d", *statusOperacao);
+                        ///////////////////DEBUG////////////////////////
+                        printf("*statusOperacao = %d\n", *statusOperacao);
+                        ////////////////////////////////////////////////
+
                         *statusOperacao = ERRO_CRIAR_GRAFO;
                     }
 
@@ -156,6 +161,8 @@ InstanciaTSP* criarInstanciaTSP(char* pathArquivoTSP, int* statusOperacao){
             }
         }
     }
+
+    instanciaTSP->melhorSolucao = NULL;
 
     ////////////////////////////////////////////////////////////
     printf("instanciaTSP->nome: %s\n", instanciaTSP->nome);

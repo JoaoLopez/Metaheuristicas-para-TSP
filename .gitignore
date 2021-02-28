@@ -1,3 +1,4 @@
-*.o
+InstanciasTSP/
 Testes/
+*.o
 compilar.sh
