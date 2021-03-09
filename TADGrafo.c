@@ -96,6 +96,90 @@ int inserirAresta(VerticeGrafo* grafo, int idVerticeOrigem, int idVerticeDestino
     return OK;
 }
 
+void ordenarPesosArestasGrafo(VerticeGrafo* grafo){
+    if(grafo == NULL){
+        return;
+    }
+
+    //Neste loop "verticeAtual" armazenará o valor do vértice do grafo que está sendo processado
+    //"vizinhoAux" percorrerá a lista de vizinhos consultando o peso de cada aresta
+    //"vizinhoAtual" apontará para o último "VerticeVizinho" já ordenado na lista de vizinhos
+    //"vizinhoMenorPeso" e "valorVizinhoMenorPeso" armazenarão o "VerticeVizinho" e o peso da aresta
+    //de menor peso até agora encontrada e não ordenada
+    //"vizinhoAnteriorMenorPeso" apontará para o "VerticeVizinho" localizado imediatamente antes de "vizinhoMenorPeso"
+    VerticeGrafo* verticeAtual = grafo;
+    VerticeVizinho *vizinhoAnteriorMenorPeso = NULL, *vizinhoMenorPeso = NULL, *vizinhoAtual = NULL, *vizinhoAux = NULL;
+    int valorVizinhoMenorPeso = -1;
+    while(verticeAtual != NULL){
+        //Inicializando variáveis
+        vizinhoAtual = NULL;
+        vizinhoAux = verticeAtual->verticeVizinho;
+        do{
+            //Inicializando variáveis
+            vizinhoAnteriorMenorPeso = NULL;
+            vizinhoMenorPeso = NULL;
+            valorVizinhoMenorPeso = -1;
+
+            //Verificando se a lista de vizinhos está vazia
+            if(verticeAtual->verticeVizinho == NULL){
+                break;
+            }
+
+            //Buscando aresta de menor peso ainda desordenada
+            while(vizinhoAux != NULL){
+                if(vizinhoAux->pesoAresta < valorVizinhoMenorPeso || valorVizinhoMenorPeso == -1){
+                    valorVizinhoMenorPeso = vizinhoAux->pesoAresta;
+                    vizinhoMenorPeso = vizinhoAux;
+                }
+
+                vizinhoAux = vizinhoAux->proximoVizinho;
+            }
+
+            //Buscando nó imediatamente anterior a "vizinhoMenorPeso"
+            //na lista de vizinhos
+            vizinhoAux = verticeAtual->verticeVizinho;
+            while(vizinhoAux != vizinhoMenorPeso){
+                vizinhoAnteriorMenorPeso = vizinhoAux;
+                vizinhoAux = vizinhoAux->proximoVizinho;
+            }
+
+            //Retirando "vizinhoMenorPeso" da lista de vizinhos, adicionando-o
+            //na posição correta da lista de vizinhos e atualizando "vizinhoAtual"
+
+            //Caso em que "vizinhoMenorPeso" já está na primeira posição da
+            //lista de vizinhos
+            if(vizinhoAnteriorMenorPeso == NULL){
+                vizinhoAtual = vizinhoMenorPeso;
+            }
+            else{
+                //Excluindo "vizinhoMenorPeso" da lista de vizinhos
+                vizinhoAnteriorMenorPeso->proximoVizinho = vizinhoMenorPeso->proximoVizinho;
+
+                //Verificando se "vizinhoMenorPeso" é o primeiro vizinho
+                //sendo ordenado
+                if(vizinhoAtual == NULL){
+                    vizinhoMenorPeso->proximoVizinho = verticeAtual->verticeVizinho;
+                    verticeAtual->verticeVizinho = vizinhoMenorPeso;
+                    vizinhoAtual = vizinhoMenorPeso;
+                }
+                else{
+                    vizinhoMenorPeso->proximoVizinho = vizinhoAtual->proximoVizinho;
+                    vizinhoAtual->proximoVizinho = vizinhoMenorPeso;
+                    vizinhoAtual = vizinhoMenorPeso;
+                }
+            }
+
+            //Atualizando "vizinhoAux"
+            vizinhoAux = vizinhoAtual->proximoVizinho;
+
+        }while(vizinhoAtual->proximoVizinho != NULL);
+        
+        verticeAtual = verticeAtual->proximoVerticeGrafo;
+    }
+
+    return;
+}
+
 void deletarGrafo(VerticeGrafo* grafo){
     while(grafo != NULL){
         grafo = deletarVertice(grafo, grafo->id);
