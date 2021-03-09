@@ -182,9 +182,9 @@ InstanciaTSP* criarInstanciaTSP(char* pathArquivoTSP, int* statusOperacao){
     return instanciaTSP;
 }
 
-/*
-void solucionarInstanciaGRASP(InstanciaTSP* instanciaTSP);
-*/
+int solucionarInstanciaTSPHeuristicaVizinhoMaisProximo(InstanciaTSP* instanciaTSP){
+    return solucionarHeuristicaVizinhoMaisProximo(instanciaTSP);
+}
 
 void deletarInstanciaTSP(InstanciaTSP* instanciaTSP){
     deletarTour(instanciaTSP->melhorSolucao);
@@ -195,4 +195,16 @@ void deletarInstanciaTSP(InstanciaTSP* instanciaTSP){
     free(instanciaTSP->nome);
     free(instanciaTSP);
     return;
+}
+
+int getDimensaoInstanciaTSP(InstanciaTSP* instanciaTSP){
+    return instanciaTSP->dimensao;
+}
+
+VerticeGrafo* getGrafoInstanciaTSP(InstanciaTSP* instanciaTSP){
+    return instanciaTSP->grafo;
+}
+
+void setMelhorSolucaoInstanciaTSP(InstanciaTSP* instanciaTSP, NoTour* tour){
+    instanciaTSP->melhorSolucao = tour;
 }

@@ -44,6 +44,8 @@ VerticeGrafo* deletarVertice(VerticeGrafo* grafo, int idVertice);
 //para esse procedimento
 void deletarAresta(VerticeGrafo* grafo,  int idVerticeOrigem, int idVerticeDestino);
 
+VerticeGrafo* getVerticeGrafo(VerticeGrafo* grafo,  int idVertice);
+
 //DEBUG!!!!!!!!!!!!!!!!!!!!!!!!!
 void imprimirGrafo(VerticeGrafo* grafo);
 

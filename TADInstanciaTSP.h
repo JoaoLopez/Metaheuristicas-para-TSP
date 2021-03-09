@@ -17,12 +17,18 @@ typedef struct instanciaTSP{
     NoTour* melhorSolucao;
 }InstanciaTSP;
 
+#include "TADHeuristicas.h"
+
 InstanciaTSP* criarInstanciaTSP(char* pathArquivoTSP, int* statusOperacao);
 
-/*
-void solucionarInstanciaGRASP(InstanciaTSP* instanciaTSP);
-*/
+int solucionarInstanciaTSPHeuristicaVizinhoMaisProximo(InstanciaTSP* instanciaTSP);
 
 void deletarInstanciaTSP(InstanciaTSP* instanciaTSP);
+
+int getDimensaoInstanciaTSP(InstanciaTSP* instanciaTSP);
+
+VerticeGrafo* getGrafoInstanciaTSP(InstanciaTSP* instanciaTSP);
+
+void setMelhorSolucaoInstanciaTSP(InstanciaTSP* instanciaTSP, NoTour* tour);
 
 #endif

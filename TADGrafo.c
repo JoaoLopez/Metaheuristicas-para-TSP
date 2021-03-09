@@ -285,6 +285,18 @@ void deletarAresta(VerticeGrafo* grafo,  int idVerticeOrigem, int idVerticeDesti
     }
 }
 
+VerticeGrafo* getVerticeGrafo(VerticeGrafo* grafo,  int idVertice){
+    while(grafo != NULL){
+        if(grafo->id == idVertice){
+            return grafo;
+        }
+
+        grafo = grafo->proximoVerticeGrafo;
+    }
+
+    return NULL;
+}
+
 //DEBUG!!!!!!!!!!!!!!!!!!!!!!!!!
 void imprimirGrafo(VerticeGrafo* grafo){
     VerticeGrafo* grafoAuxiliar = grafo;

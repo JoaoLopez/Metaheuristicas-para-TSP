@@ -1,4 +1,6 @@
+Arquivos Auxiliares/
 InstanciasTSP/
 Testes/
 *.o
 compilar.sh
+obs.md
