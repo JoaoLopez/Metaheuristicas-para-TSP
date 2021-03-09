@@ -14,6 +14,8 @@ typedef struct noTour{
 }NoTour;
 
 NoTour* criarTour();
+int tourEstaCompleto(NoTour* tour);
+int insercaoCidadeTourValida(int idCidade, NoTour* tour);
 NoTour* inserirCidadeFimTour(int idCidade, NoTour* tour, int* statusOperacao);
 NoTour* deletarCidadeTour(int idCidade, NoTour* tour);
 void deletarTour(NoTour* tour);

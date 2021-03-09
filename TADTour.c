@@ -4,7 +4,59 @@ NoTour* criarTour(){
     return NULL;
 }
 
+int tourEstaCompleto(NoTour* tour){
+    if(tour == NULL){
+        return 0;
+    }
+    if(tour->proximoNoTour == NULL){
+        return 0;
+    }
+
+    int idCidadeInicial = tour->idCidade;
+    while(tour->proximoNoTour != NULL){
+        tour = tour->proximoNoTour;
+    }
+
+    if(tour->idCidade == idCidadeInicial){
+        return 1;
+    }
+    else{
+        return 0;
+    }
+}
+
+int insercaoCidadeTourValida(int idCidade, NoTour* tour){
+    //Verificando se o tour não possui ainda nenhuma cidade adicionada
+    if(tour == NULL){
+        return 1;
+    }
+
+    if(tourEstaCompleto(tour)){
+        return 0;
+    }
+
+    //Como a cidade de origem é a única que pode aparecer duas vezes no tour
+    //e atualmente está aparecendo apenas uma vez no tour (foi verificado acima
+    //que o tour não está completo), não é necessário testar se a cidade de origem
+    //é igual a cidade que se deseja inserir
+    tour = tour->proximoNoTour;
+    while(tour != NULL){
+        if(tour->idCidade == idCidade){
+            return 0;
+        }
+        tour = tour->proximoNoTour;
+    }
+
+    return 1;
+}
+
 NoTour* inserirCidadeFimTour(int idCidade, NoTour* tour, int* statusOperacao){
+    //Verificando se a inserção da cidade no tour gerará um tour válido
+    if(!insercaoCidadeTourValida(idCidade, tour)){
+        *statusOperacao = ERRO_INSERCAO_CIDADE_TOUR_INVALIDA;
+        return tour;
+    }
+
     //Alocando novo NoTour
     NoTour* novoNoTour = (NoTour*) malloc(sizeof(NoTour));
     if(novoNoTour == NULL){
