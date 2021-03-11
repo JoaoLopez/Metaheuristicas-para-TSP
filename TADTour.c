@@ -25,7 +25,7 @@ int tourEstaCompleto(NoTour* tour){
     }
 }
 
-int insercaoCidadeTourValida(int idCidade, NoTour* tour){
+int insercaoCidadeTourValida(int idCidade, NoTour* tour, int insercaoInicioTour){
     //Verificando se o tour não possui ainda nenhuma cidade adicionada
     if(tour == NULL){
         return 1;
@@ -35,24 +35,63 @@ int insercaoCidadeTourValida(int idCidade, NoTour* tour){
         return 0;
     }
 
-    //Como a cidade de origem é a única que pode aparecer duas vezes no tour
-    //e atualmente está aparecendo apenas uma vez no tour (foi verificado acima
-    //que o tour não está completo), não é necessário testar se a cidade de origem
-    //é igual a cidade que se deseja inserir
-    tour = tour->proximoNoTour;
-    while(tour != NULL){
-        if(tour->idCidade == idCidade){
-            return 0;
+    if(insercaoInicioTour){
+        //Como a cidade de origem é a única que pode aparecer duas vezes no tour
+        //e atualmente está aparecendo apenas uma vez no tour (foi verificado acima
+        //que o tour não está completo), não é necessário testar se a última cidade
+        //do tour é igual a cidade que se deseja inserir
+        while(tour != NULL){
+            if(tour->proximoNoTour == NULL){
+                break;
+            }
+            if(tour->idCidade == idCidade){
+                return 0;
+            }
+            tour = tour->proximoNoTour;
         }
+    }
+    else{
+        //Como a cidade de origem é a única que pode aparecer duas vezes no tour
+        //e atualmente está aparecendo apenas uma vez no tour (foi verificado acima
+        //que o tour não está completo), não é necessário testar se a cidade de origem
+        //é igual a cidade que se deseja inserir
         tour = tour->proximoNoTour;
+        while(tour != NULL){
+            if(tour->idCidade == idCidade){
+                return 0;
+            }
+            tour = tour->proximoNoTour;
+        }
     }
 
     return 1;
 }
 
+NoTour* inserirCidadeInicioTour(int idCidade, NoTour* tour, int* statusOperacao){
+//Verificando se a inserção da cidade no tour gerará um tour válido
+    if(!insercaoCidadeTourValida(idCidade, tour, 1)){
+        *statusOperacao = ERRO_INSERCAO_CIDADE_TOUR_INVALIDA;
+        return tour;
+    }
+
+    //Alocando novo NoTour
+    NoTour* novoNoTour = (NoTour*) malloc(sizeof(NoTour));
+    if(novoNoTour == NULL){
+        *statusOperacao = ERRO_MEMORIA_INSUFICIENTE;
+        return tour;
+    }
+
+    novoNoTour->idCidade = idCidade;
+    novoNoTour->proximoNoTour = tour;
+
+    *statusOperacao = OK;
+
+    return novoNoTour;
+}
+
 NoTour* inserirCidadeFimTour(int idCidade, NoTour* tour, int* statusOperacao){
     //Verificando se a inserção da cidade no tour gerará um tour válido
-    if(!insercaoCidadeTourValida(idCidade, tour)){
+    if(!insercaoCidadeTourValida(idCidade, tour, 0)){
         *statusOperacao = ERRO_INSERCAO_CIDADE_TOUR_INVALIDA;
         return tour;
     }
