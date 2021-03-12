@@ -23,6 +23,8 @@ InstanciaTSP* criarInstanciaTSP(char* pathArquivoTSP, int* statusOperacao);
 
 int solucionarInstanciaTSPHeuristicaVizinhoMaisProximo(InstanciaTSP* instanciaTSP);
 
+int solucionarInstanciaTSPHeuristicaVizinhoMaisProximoDoisLados(InstanciaTSP* instanciaTSP);
+
 void deletarInstanciaTSP(InstanciaTSP* instanciaTSP);
 
 int getDimensaoInstanciaTSP(InstanciaTSP* instanciaTSP);

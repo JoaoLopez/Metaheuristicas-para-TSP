@@ -186,6 +186,10 @@ int solucionarInstanciaTSPHeuristicaVizinhoMaisProximo(InstanciaTSP* instanciaTS
     return solucionarHeuristicaVizinhoMaisProximo(instanciaTSP);
 }
 
+int solucionarInstanciaTSPHeuristicaVizinhoMaisProximoDoisLados(InstanciaTSP* instanciaTSP){
+    return solucionarHeuristicaVizinhoMaisProximoDoisLados(instanciaTSP);
+}
+
 void deletarInstanciaTSP(InstanciaTSP* instanciaTSP){
     deletarTour(instanciaTSP->melhorSolucao);
     deletarGrafo(instanciaTSP->grafo);
