@@ -56,11 +56,8 @@ int main(int argc, char *argv[]){
         }
 
         //Salvando dados no arquivo de saída
-        printf("\n\n#############################nomeArquivoSaida: %s\n", nomeArquivoSaida);
         strcpy(nomeArquivoSaida, getNomeInstanciaTSP(instanciaTSP));
-        printf("#############################nomeArquivoSaida: %s\n", nomeArquivoSaida);
         strcat(nomeArquivoSaida, "HVMP.txt");
-        printf("#############################nomeArquivoSaida: %s\n\n", nomeArquivoSaida);
         arquivoSaida = fopen(nomeArquivoSaida, "wt");
         salvarInstanciaTSP(instanciaTSP, arquivoSaida);
         fprintf(arquivoSaida, "Tempo de execução: %lf", tempoExecucao);
@@ -86,11 +83,8 @@ int main(int argc, char *argv[]){
         }
 
         //Salvando dados no arquivo de saída
-        printf("\n\n#############################nomeArquivoSaida: %s\n", nomeArquivoSaida);
         strcpy(nomeArquivoSaida, getNomeInstanciaTSP(instanciaTSP));
-        printf("#############################nomeArquivoSaida: %s\n", nomeArquivoSaida);
         strcat(nomeArquivoSaida, "HVMPDL.txt");
-        printf("#############################nomeArquivoSaida: %s\n\n", nomeArquivoSaida);
         arquivoSaida = fopen(nomeArquivoSaida, "wt");
         salvarInstanciaTSP(instanciaTSP, arquivoSaida);
         fprintf(arquivoSaida, "Tempo de execução: %lf", tempoExecucao);

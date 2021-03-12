@@ -133,17 +133,9 @@ InstanciaTSP* criarInstanciaTSP(char* pathArquivoTSP, int* statusOperacao){
                 ponto2 = vetorPontos[j];
                 distancia = calcularDistanciaPontos(ponto1, ponto2);
 
-                /////////////////////////DEBUG////////////////////////////
-                printf("i, j, distancia: %d, %d, %lf\n", i, j, distancia);
-                //////////////////////////////////////////////////////////
-
                 *statusOperacao = inserirAresta(instanciaTSP->grafo, i+1, j+1, distancia);
                 if(*statusOperacao != OK){
                     if(*statusOperacao != ERRO_MEMORIA_INSUFICIENTE){
-                        ///////////////////DEBUG////////////////////////
-                        printf("*statusOperacao = %d\n", *statusOperacao);
-                        ////////////////////////////////////////////////
-
                         *statusOperacao = ERRO_CRIAR_GRAFO;
                     }
 
@@ -164,19 +156,6 @@ InstanciaTSP* criarInstanciaTSP(char* pathArquivoTSP, int* statusOperacao){
 
     instanciaTSP->melhorSolucao = NULL;
     instanciaTSP->custoMelhorSolucao = -1;
-
-    ////////////////////////////////////////////////////////////
-    printf("instanciaTSP->nome: %s\n", instanciaTSP->nome);
-    printf("instanciaTSP->comentario: %s\n", instanciaTSP->comentario);
-    printf("instanciaTSP->tipo: %s\n", instanciaTSP->tipo);
-    printf("instanciaTSP->dimensao: %d\n", instanciaTSP->dimensao);
-    printf("instanciaTSP->tipoPesoAresta: %s\n", instanciaTSP->tipoPesoAresta);
-    printf("instanciaTSP->grafo:\n");
-    imprimirGrafo(instanciaTSP->grafo);
-    printf("instanciaTSP->melhorSolucao:\n");
-    imprimirTour(instanciaTSP->melhorSolucao);
-    printf("\ninstanciaTSP->custoMelhorSolucao: %lf\n", instanciaTSP->custoMelhorSolucao);
-    ///////////////////////////////////////////////////
     
     for(int i = 0; i < instanciaTSP->dimensao; i++){
         deletarPonto(vetorPontos[i]);

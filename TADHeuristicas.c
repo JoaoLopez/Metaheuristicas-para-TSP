@@ -9,11 +9,6 @@ int solucionarHeuristicaVizinhoMaisProximo(InstanciaTSP* instanciaTSP){
     //Sorteando vértice do grafo pelo qual o algoritmo começará
     int numeroCidades = getDimensaoInstanciaTSP(instanciaTSP);
     int idCidadeInicio = sortearNumeroAleatorio(1, numeroCidades);
-    
-    //////DEBUG////////
-    printf("CIDADE INICIAL SORTEADA: %d\n", idCidadeInicio);
-    //////////////////
-
 
     //Adicionando vértice à solução
     NoTour* solucaoInstanciaTSP = criarTour();
@@ -26,14 +21,6 @@ int solucionarHeuristicaVizinhoMaisProximo(InstanciaTSP* instanciaTSP){
         return codigoErro;
     }
 
-
-    //////DEBUG////////
-    printf("Imprimindo tour:\n");
-    imprimirTour(solucaoInstanciaTSP);
-    printf("\n");
-    //////////////////
-
-
     //Recuperando grafo da instância de TSP e ordenando todas as suas
     //arestas em ordem crescente de peso
     VerticeGrafo* grafo = getGrafoInstanciaTSP(instanciaTSP);
@@ -43,34 +30,20 @@ int solucionarHeuristicaVizinhoMaisProximo(InstanciaTSP* instanciaTSP){
         return ERRO_GRAFO_INSTANCIA_TSP_VAZIO;
     }
 
-    /////////DEBUG///////////////
-    printf("ORDENANDO GRAFO...\n");
-    /////////////////////////////
-
     ordenarPesosArestasGrafo(grafo);
-
-    /////////DEBUG///////////////
-    printf("IMPRIMINDO GRAFO ORDENADO:\n");
-    imprimirGrafo(grafo);
-    printf("\n");
-    /////////////////////////////
 
     VerticeGrafo* verticeAtual = getVerticeGrafo(grafo, idCidadeInicio);
     VerticeVizinho* vizinhoAtual = verticeAtual->verticeVizinho;
     int cidadeInseridaSucesso = 0;
     for(int i = 0; i < numeroCidades-1; i++){
         cidadeInseridaSucesso = 0;
-
-        printf("VerticeAtual: %d\n", verticeAtual->id);
-
+        
         while(vizinhoAtual != NULL){
 
             if(vizinhoAtual->id == idCidadeInicio){
                 vizinhoAtual = vizinhoAtual->proximoVizinho;
                 continue;
             }
-
-            printf("VizinhoAtual: %d\n", vizinhoAtual->id);
 
             solucaoInstanciaTSP = inserirCidadeFimTour(vizinhoAtual->id, solucaoInstanciaTSP, statusOperacao);
             if(*statusOperacao == ERRO_MEMORIA_INSUFICIENTE){
@@ -80,11 +53,6 @@ int solucionarHeuristicaVizinhoMaisProximo(InstanciaTSP* instanciaTSP){
             }
             if(*statusOperacao == OK){
                 cidadeInseridaSucesso = 1;
-
-                printf("CIDADE INSERIDA COM SUCESSO!\n");
-                printf("Imprimindo Tour:\n");
-                imprimirTour(solucaoInstanciaTSP);
-                printf("\n");
 
                 break;
             }
@@ -116,12 +84,6 @@ int solucionarHeuristicaVizinhoMaisProximo(InstanciaTSP* instanciaTSP){
         return codigoErro;
     }
 
-
-    printf("##### TOUR FINAL #####\n");
-    imprimirTour(solucaoInstanciaTSP);
-    printf("\n");
-
-
     free(statusOperacao);
     setMelhorSolucaoInstanciaTSP(instanciaTSP, solucaoInstanciaTSP);
     return OK;
@@ -136,11 +98,6 @@ int solucionarHeuristicaVizinhoMaisProximoDoisLados(InstanciaTSP* instanciaTSP){
     //Sorteando vértice do grafo pelo qual o algoritmo começará
     int numeroCidades = getDimensaoInstanciaTSP(instanciaTSP);
     int idCidadeInicio = sortearNumeroAleatorio(1, numeroCidades);
-    
-    //////DEBUG////////
-    printf("CIDADE INICIAL SORTEADA: %d\n", idCidadeInicio);
-    //////////////////
-
 
     //Adicionando vértice à solução
     NoTour* solucaoInstanciaTSP = criarTour();
@@ -153,14 +110,6 @@ int solucionarHeuristicaVizinhoMaisProximoDoisLados(InstanciaTSP* instanciaTSP){
         return codigoErro;
     }
 
-
-    //////DEBUG////////
-    printf("Imprimindo tour:\n");
-    imprimirTour(solucaoInstanciaTSP);
-    printf("\n");
-    //////////////////
-
-
     //Recuperando grafo da instância de TSP e ordenando todas as suas
     //arestas em ordem crescente de peso
     VerticeGrafo* grafo = getGrafoInstanciaTSP(instanciaTSP);
@@ -170,17 +119,7 @@ int solucionarHeuristicaVizinhoMaisProximoDoisLados(InstanciaTSP* instanciaTSP){
         return ERRO_GRAFO_INSTANCIA_TSP_VAZIO;
     }
 
-    /////////DEBUG///////////////
-    printf("ORDENANDO GRAFO...\n");
-    /////////////////////////////
-
     ordenarPesosArestasGrafo(grafo);
-
-    /////////DEBUG///////////////
-    printf("IMPRIMINDO GRAFO ORDENADO:\n");
-    imprimirGrafo(grafo);
-    printf("\n");
-    /////////////////////////////
 
     VerticeGrafo* verticeInicioTour = getVerticeGrafo(grafo, idCidadeInicio);
     VerticeGrafo* verticeFimTour = getVerticeGrafo(grafo, idCidadeInicio);
@@ -190,20 +129,10 @@ int solucionarHeuristicaVizinhoMaisProximoDoisLados(InstanciaTSP* instanciaTSP){
     for(int i = 0; i < numeroCidades-1; i++){
         cidadeInseridaSucesso = 0;
 
-        ////////////////////////DEBUG/////////////////////////////
-        printf("##################verticeInicioTour: %d\n", verticeInicioTour->id);
-        printf("##################verticeFimTour: %d\n", verticeFimTour->id);
-        //////////////////////////////////////////////////////////
-
         while(vizinhoInicioTour != NULL ||
         vizinhoFimTour != NULL){
             idCidadeSeraInserida = -1;
             insercaoCidadeInicioTour = -1;
-
-            ////////////////////DEBUG///////////////////////
-            printf("VizinhoInicioTour: %d\n", vizinhoInicioTour->id);
-            printf("VizinhoFimTour: %d\n", vizinhoFimTour->id);
-            ////////////////////////////////////////////////
 
             //Verificando necessidade de atualizar "VerticeVizinho*" para
             //que não haja risco de ao inserir uma cidade, crie-se um tour
@@ -253,11 +182,6 @@ int solucionarHeuristicaVizinhoMaisProximoDoisLados(InstanciaTSP* instanciaTSP){
             if(*statusOperacao == OK){
                 cidadeInseridaSucesso = 1;
 
-                printf("CIDADE INSERIDA COM SUCESSO!\n");
-                printf("Imprimindo Tour:\n");
-                imprimirTour(solucaoInstanciaTSP);
-                printf("\n");
-
                 break;
             }
 
@@ -302,12 +226,6 @@ int solucionarHeuristicaVizinhoMaisProximoDoisLados(InstanciaTSP* instanciaTSP){
         deletarTour(solucaoInstanciaTSP);
         return codigoErro;
     }
-
-
-    printf("##### TOUR FINAL #####\n");
-    imprimirTour(solucaoInstanciaTSP);
-    printf("\n");
-
 
     free(statusOperacao);
     setMelhorSolucaoInstanciaTSP(instanciaTSP, solucaoInstanciaTSP);
