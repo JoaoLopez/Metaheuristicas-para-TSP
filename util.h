@@ -1,0 +1,11 @@
+#ifndef UTIL_H
+#define UTIL_H
+
+#include <stdlib.h>
+#include <sys/resource.h>
+
+int sortearNumeroAleatorio(int valorMinimo, int valorMaximo);
+
+void Tempo_CPU_Sistema(double *seg_CPU_total, double *seg_sistema_total);
+
+#endif
