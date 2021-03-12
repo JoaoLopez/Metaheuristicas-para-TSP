@@ -70,7 +70,7 @@ int inserirAresta(VerticeGrafo* grafo, int idVerticeOrigem, int idVerticeDestino
     if(arestaEstaGrafo(grafo, idVerticeOrigem, idVerticeDestino)){
         return ERRO_ARESTA_JA_EXISTENTE;
     }
-    if(pesoAresta <= 0){
+    if(pesoAresta < 0){
         return ERRO_PESO_ARESTA_NAO_POSITIVO;
     }
 
