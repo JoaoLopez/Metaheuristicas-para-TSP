@@ -1,6 +1,8 @@
 Arquivos Auxiliares/
 InstanciasTSP/
 Testes/
+out/
 *.o
 compilar.sh
 obs.md
+main
