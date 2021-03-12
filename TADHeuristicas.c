@@ -1,9 +1,5 @@
 #include "TADHeuristicas.h"
 
-int sortearNumeroAleatorio(int valorMinimo, int valorMaximo){
-    return (rand() % (valorMaximo - valorMinimo + 1)) + valorMinimo;
-}
-
 int solucionarHeuristicaVizinhoMaisProximo(InstanciaTSP* instanciaTSP){
     int* statusOperacao = (int*) malloc(sizeof(int));
     if(statusOperacao == NULL){

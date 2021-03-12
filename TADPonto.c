@@ -21,13 +21,17 @@ double calcularDistanciaPontos(Ponto* ponto1, Ponto* ponto2){
 }
 
 void deletarPonto(Ponto* ponto){
-    free(ponto);
+    if(ponto != NULL){
+        free(ponto);
+    }
     return;
 }
 
 //////////////DEBUG!!!!!!!!!!!!!!!!!
 void imprimirPonto(Ponto* ponto){
     printf("Ponto:\n");
-    printf("x = %lf\n", ponto->x);
-    printf("y = %lf\n", ponto->y);
+    if(ponto != NULL){
+        printf("x = %lf\n", ponto->x);
+        printf("y = %lf\n", ponto->y);
+    }
 }

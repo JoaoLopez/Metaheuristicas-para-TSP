@@ -122,6 +122,19 @@ NoTour* inserirCidadeFimTour(int idCidade, NoTour* tour, int* statusOperacao){
     return tour;
 }
 
+NoTour* getNoTourPosicao(NoTour* tour, int posicao){
+    int i = 0;
+    while(i != posicao){
+        if(tour == NULL){
+            return NULL;
+        }
+        tour = tour->proximoNoTour;
+        i++;
+    }
+
+    return tour;
+}
+
 NoTour* deletarCidadeTour(int idCidade, NoTour* tour){
     if(tour == NULL){
         return tour;
@@ -167,6 +180,10 @@ void deletarTour(NoTour* tour){
     }
 
     return;
+}
+
+int getIdTour(NoTour* tour){
+    return tour->idCidade;
 }
 
 ////////////DEBUG///////////

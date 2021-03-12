@@ -297,6 +297,33 @@ VerticeGrafo* getVerticeGrafo(VerticeGrafo* grafo,  int idVertice){
     return NULL;
 }
 
+double getPesoArestaGrafo(VerticeGrafo* grafo, int idVerticeOrigem, int idVerticeDestino){
+    while(grafo != NULL){
+        if(grafo->id == idVerticeOrigem){
+            break;
+        }
+        
+        grafo = grafo->proximoVerticeGrafo;
+    }
+    if(grafo == NULL){
+        return -1;
+    }
+
+    VerticeVizinho* vizinho = grafo->verticeVizinho;
+    while(vizinho != NULL){
+        if(vizinho->id == idVerticeDestino){
+            break;
+        }
+        
+        vizinho = vizinho->proximoVizinho;
+    }
+    if(vizinho == NULL){
+        return -1;
+    }
+    
+    return vizinho->pesoAresta;
+}
+
 //DEBUG!!!!!!!!!!!!!!!!!!!!!!!!!
 void imprimirGrafo(VerticeGrafo* grafo){
     VerticeGrafo* grafoAuxiliar = grafo;
@@ -314,4 +341,5 @@ void imprimirGrafo(VerticeGrafo* grafo){
         }
         grafoAuxiliar = grafoAuxiliar->proximoVerticeGrafo;
     }
+    printf("\n");
 }

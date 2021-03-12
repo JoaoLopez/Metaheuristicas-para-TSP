@@ -15,6 +15,7 @@ typedef struct instanciaTSP{
     char* tipoPesoAresta;
     VerticeGrafo* grafo;
     NoTour* melhorSolucao;
+    double custoMelhorSolucao;
 }InstanciaTSP;
 
 #include "TADHeuristicas.h"
@@ -32,5 +33,10 @@ int getDimensaoInstanciaTSP(InstanciaTSP* instanciaTSP);
 VerticeGrafo* getGrafoInstanciaTSP(InstanciaTSP* instanciaTSP);
 
 void setMelhorSolucaoInstanciaTSP(InstanciaTSP* instanciaTSP, NoTour* tour);
+
+void calcularCustoMelhorSolucaoInstanciaTSP(InstanciaTSP* InstanciaTSP);
+
+///////////////////////DEBUG///////////////////////////////
+void imprimirInstanciaTSP(InstanciaTSP* instanciaTSP);
 
 #endif

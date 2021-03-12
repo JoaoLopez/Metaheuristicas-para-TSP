@@ -163,6 +163,7 @@ InstanciaTSP* criarInstanciaTSP(char* pathArquivoTSP, int* statusOperacao){
     }
 
     instanciaTSP->melhorSolucao = NULL;
+    instanciaTSP->custoMelhorSolucao = -1;
 
     ////////////////////////////////////////////////////////////
     printf("instanciaTSP->nome: %s\n", instanciaTSP->nome);
@@ -172,6 +173,9 @@ InstanciaTSP* criarInstanciaTSP(char* pathArquivoTSP, int* statusOperacao){
     printf("instanciaTSP->tipoPesoAresta: %s\n", instanciaTSP->tipoPesoAresta);
     printf("instanciaTSP->grafo:\n");
     imprimirGrafo(instanciaTSP->grafo);
+    printf("instanciaTSP->melhorSolucao:\n");
+    imprimirTour(instanciaTSP->melhorSolucao);
+    printf("\ninstanciaTSP->custoMelhorSolucao: %lf\n", instanciaTSP->custoMelhorSolucao);
     ///////////////////////////////////////////////////
     
     for(int i = 0; i < instanciaTSP->dimensao; i++){
@@ -191,6 +195,10 @@ int solucionarInstanciaTSPHeuristicaVizinhoMaisProximoDoisLados(InstanciaTSP* in
 }
 
 void deletarInstanciaTSP(InstanciaTSP* instanciaTSP){
+    if(instanciaTSP == NULL){
+        return;
+    }
+    
     deletarTour(instanciaTSP->melhorSolucao);
     deletarGrafo(instanciaTSP->grafo);
     free(instanciaTSP->tipoPesoAresta);
@@ -211,4 +219,63 @@ VerticeGrafo* getGrafoInstanciaTSP(InstanciaTSP* instanciaTSP){
 
 void setMelhorSolucaoInstanciaTSP(InstanciaTSP* instanciaTSP, NoTour* tour){
     instanciaTSP->melhorSolucao = tour;
+    calcularCustoMelhorSolucaoInstanciaTSP(instanciaTSP);
+}
+
+void calcularCustoMelhorSolucaoInstanciaTSP(InstanciaTSP* instanciaTSP){
+    if(instanciaTSP->melhorSolucao == NULL){
+        instanciaTSP->custoMelhorSolucao = -1;
+        return;
+    }
+
+    double custoMelhorSolucao = 0, custoArestaAtual = -1;
+    NoTour *cidadeOrigem = NULL, *cidadeDestino = NULL;
+
+    //O retorno dessa função nunca será NULL pois foi testado anteriormente
+    //se instanciaTSP->melhorSolucao era NULL. Como o resultado foi negativo
+    //instanciaTSP->melhorSolucao possui um tour completo. Logo, possui ao menos
+    //dois nós
+    cidadeOrigem = getNoTourPosicao(instanciaTSP->melhorSolucao, 0);
+    int i = 1;
+    while(1){
+        cidadeDestino = getNoTourPosicao(instanciaTSP->melhorSolucao, i);
+        i++;
+
+        if(cidadeDestino == NULL){
+            break;
+        }
+
+        custoArestaAtual = getPesoArestaGrafo(instanciaTSP->grafo, getIdTour(cidadeOrigem), getIdTour(cidadeDestino));
+        if(custoArestaAtual == -1){
+            instanciaTSP->custoMelhorSolucao = -1;
+            return;
+        }
+        custoMelhorSolucao = custoMelhorSolucao + custoArestaAtual;
+
+        cidadeOrigem = cidadeDestino;
+    }
+
+    instanciaTSP->custoMelhorSolucao = custoMelhorSolucao;
+    return;
+}
+
+//////////////////DEBUG///////////////////////////////
+void imprimirInstanciaTSP(InstanciaTSP* instanciaTSP){
+    printf("Instância TSP:\n");
+    
+    if(instanciaTSP == NULL){
+        return;
+    }
+
+    printf("instanciaTSP->nome: %s\n", instanciaTSP->nome);
+    printf("instanciaTSP->comentario: %s\n", instanciaTSP->comentario);
+    printf("instanciaTSP->tipo: %s\n", instanciaTSP->tipo);
+    printf("instanciaTSP->dimensao: %d\n", instanciaTSP->dimensao);
+    printf("instanciaTSP->tipoPesoAresta: %s\n", instanciaTSP->tipoPesoAresta);
+    printf("instanciaTSP->grafo:\n");
+    imprimirGrafo(instanciaTSP->grafo);
+    printf("\ninstanciaTSP->melhorSolucao:\n");
+    imprimirTour(instanciaTSP->melhorSolucao);
+    printf("\ninstanciaTSP->custoMelhorSolucao: %lf\n", instanciaTSP->custoMelhorSolucao);
+    return;
 }

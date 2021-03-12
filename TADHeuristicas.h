@@ -13,8 +13,7 @@
 #include "TADInstanciaTSP.h"
 #include "TADGrafo.h"
 #include "TADTour.h"
-
-int sortearNumeroAleatorio(int valorMinimo, int valorMaximo);
+#include "util.h"
 
 int solucionarHeuristicaVizinhoMaisProximo(InstanciaTSP* instanciaTSP);
 
