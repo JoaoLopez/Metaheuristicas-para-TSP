@@ -285,6 +285,25 @@ void deletarAresta(VerticeGrafo* grafo,  int idVerticeOrigem, int idVerticeDesti
     }
 }
 
+void salvarGrafo(VerticeGrafo* grafo, FILE* arquivo){
+    VerticeGrafo* grafoAuxiliar = grafo;
+    VerticeVizinho* vizinhoAuxiliar = NULL;
+    fprintf(arquivo, "####### IMPRIMINDO GRAFO #######\n");
+    while(grafoAuxiliar != NULL){
+        if(grafo != grafoAuxiliar){
+            fprintf(arquivo, "\n|\n");
+        }
+        fprintf(arquivo, "%d", grafoAuxiliar->id);
+        vizinhoAuxiliar = grafoAuxiliar->verticeVizinho;
+        while(vizinhoAuxiliar != NULL){
+            fprintf(arquivo, "-%d(%lf)", vizinhoAuxiliar->id, vizinhoAuxiliar->pesoAresta);
+            vizinhoAuxiliar = vizinhoAuxiliar->proximoVizinho;
+        }
+        grafoAuxiliar = grafoAuxiliar->proximoVerticeGrafo;
+    }
+    fprintf(arquivo, "\n");
+}
+
 VerticeGrafo* getVerticeGrafo(VerticeGrafo* grafo,  int idVertice){
     while(grafo != NULL){
         if(grafo->id == idVertice){

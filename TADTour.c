@@ -182,6 +182,20 @@ void deletarTour(NoTour* tour){
     return;
 }
 
+void salvarTour(NoTour* tour, FILE* arquivo){
+    fprintf(arquivo, "Tour\n");
+    while(tour != NULL){
+        fprintf(arquivo, "idCidade: %d\n", tour->idCidade);
+        tour = tour->proximoNoTour;
+
+        if(tour != NULL){
+            fprintf(arquivo, "|\n");
+        }
+    }
+
+    return;
+}
+
 int getIdTour(NoTour* tour){
     return tour->idCidade;
 }

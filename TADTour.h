@@ -21,6 +21,7 @@ NoTour* inserirCidadeFimTour(int idCidade, NoTour* tour, int* statusOperacao);
 NoTour* getNoTourPosicao(NoTour* tour, int posicao);
 NoTour* deletarCidadeTour(int idCidade, NoTour* tour);
 void deletarTour(NoTour* tour);
+void salvarTour(NoTour* tour, FILE* arquivo);
 int getIdTour(NoTour* tour);
 
 ////////////DEBUG///////////

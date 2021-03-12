@@ -36,6 +36,10 @@ void setMelhorSolucaoInstanciaTSP(InstanciaTSP* instanciaTSP, NoTour* tour);
 
 void calcularCustoMelhorSolucaoInstanciaTSP(InstanciaTSP* InstanciaTSP);
 
+void salvarInstanciaTSP(InstanciaTSP* instanciaTSP, FILE* arquivo);
+
+char* getNomeInstanciaTSP(InstanciaTSP* instanciaTSP);
+
 ///////////////////////DEBUG///////////////////////////////
 void imprimirInstanciaTSP(InstanciaTSP* instanciaTSP);
 

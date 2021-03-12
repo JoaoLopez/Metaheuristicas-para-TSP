@@ -44,6 +44,8 @@ VerticeGrafo* deletarVertice(VerticeGrafo* grafo, int idVertice);
 //para esse procedimento
 void deletarAresta(VerticeGrafo* grafo,  int idVerticeOrigem, int idVerticeDestino);
 
+void salvarGrafo(VerticeGrafo* grafo, FILE* arquivo);
+
 VerticeGrafo* getVerticeGrafo(VerticeGrafo* grafo,  int idVertice);
 
 double getPesoArestaGrafo(VerticeGrafo* grafo, int idVerticeOrigem, int idVerticeDestino);

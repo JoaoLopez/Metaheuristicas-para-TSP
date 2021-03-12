@@ -259,6 +259,30 @@ void calcularCustoMelhorSolucaoInstanciaTSP(InstanciaTSP* instanciaTSP){
     return;
 }
 
+void salvarInstanciaTSP(InstanciaTSP* instanciaTSP, FILE* arquivo){
+    fprintf(arquivo, "Instância TSP:\n");
+    
+    if(instanciaTSP == NULL){
+        return;
+    }
+
+    fprintf(arquivo, "instanciaTSP->nome: %s\n", instanciaTSP->nome);
+    fprintf(arquivo, "instanciaTSP->comentario: %s\n", instanciaTSP->comentario);
+    fprintf(arquivo, "instanciaTSP->tipo: %s\n", instanciaTSP->tipo);
+    fprintf(arquivo, "instanciaTSP->dimensao: %d\n", instanciaTSP->dimensao);
+    fprintf(arquivo, "instanciaTSP->tipoPesoAresta: %s\n", instanciaTSP->tipoPesoAresta);
+    fprintf(arquivo, "instanciaTSP->grafo:\n");
+    salvarGrafo(instanciaTSP->grafo, arquivo);
+    fprintf(arquivo, "\ninstanciaTSP->melhorSolucao:\n");
+    salvarTour(instanciaTSP->melhorSolucao, arquivo);
+    fprintf(arquivo, "\ninstanciaTSP->custoMelhorSolucao: %lf\n", instanciaTSP->custoMelhorSolucao);
+    return;
+}
+
+char* getNomeInstanciaTSP(InstanciaTSP* instanciaTSP){
+    return instanciaTSP->nome;
+}
+
 //////////////////DEBUG///////////////////////////////
 void imprimirInstanciaTSP(InstanciaTSP* instanciaTSP){
     printf("Instância TSP:\n");
