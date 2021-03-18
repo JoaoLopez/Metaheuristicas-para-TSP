@@ -50,6 +50,12 @@ VerticeGrafo* getVerticeGrafo(VerticeGrafo* grafo,  int idVertice);
 
 double getPesoArestaGrafo(VerticeGrafo* grafo, int idVerticeOrigem, int idVerticeDestino);
 
+//Atualmente não está sendo utilizada
+VerticeVizinho* getArestaMaiorCustoVertice(VerticeGrafo* verticeGrafo);
+
+//Atualmente não está sendo utilizada
+VerticeVizinho* getArestaMenorCustoVertice(VerticeGrafo* verticeGrafo);
+
 //DEBUG!!!!!!!!!!!!!!!!!!!!!!!!!
 void imprimirGrafo(VerticeGrafo* grafo);
 

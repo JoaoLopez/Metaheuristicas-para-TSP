@@ -26,6 +26,8 @@ int solucionarInstanciaTSPHeuristicaVizinhoMaisProximo(InstanciaTSP* instanciaTS
 
 int solucionarInstanciaTSPHeuristicaVizinhoMaisProximoDoisLados(InstanciaTSP* instanciaTSP);
 
+int solucionarInstanciaTSPHeuristicaVizinhoMaisProximoDoisLadosRandomizada(InstanciaTSP* instanciaTSP, double alpha);
+
 void deletarInstanciaTSP(InstanciaTSP* instanciaTSP);
 
 int getDimensaoInstanciaTSP(InstanciaTSP* instanciaTSP);

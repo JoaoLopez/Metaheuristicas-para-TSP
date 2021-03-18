@@ -173,6 +173,10 @@ int solucionarInstanciaTSPHeuristicaVizinhoMaisProximoDoisLados(InstanciaTSP* in
     return solucionarHeuristicaVizinhoMaisProximoDoisLados(instanciaTSP);
 }
 
+int solucionarInstanciaTSPHeuristicaVizinhoMaisProximoDoisLadosRandomizada(InstanciaTSP* instanciaTSP, double alpha){
+    return solucionarHeuristicaVizinhoMaisProximoDoisLadosRandomizada(instanciaTSP, alpha);
+}
+
 void deletarInstanciaTSP(InstanciaTSP* instanciaTSP){
     if(instanciaTSP == NULL){
         return;

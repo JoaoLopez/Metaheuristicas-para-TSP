@@ -4,6 +4,19 @@ int sortearNumeroAleatorio(int valorMinimo, int valorMaximo){
     return (rand() % (valorMaximo - valorMinimo + 1)) + valorMinimo;
 }
 
+int elementoEstaVetor(int elemento, int* vetor, int tamanhoVetor){
+    if(vetor == NULL){
+        return 0;
+    }
+    
+    for(int i = 0; i < tamanhoVetor; i++){
+        if(vetor[i] == elemento){
+            return 1;
+        }
+    }
+    return 0;
+}
+
 void Tempo_CPU_Sistema(double *seg_CPU_total, double *seg_sistema_total){
 
   long seg_CPU, seg_sistema, mseg_CPU, mseg_sistema;

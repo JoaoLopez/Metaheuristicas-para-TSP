@@ -343,6 +343,45 @@ double getPesoArestaGrafo(VerticeGrafo* grafo, int idVerticeOrigem, int idVertic
     return vizinho->pesoAresta;
 }
 
+VerticeVizinho* getArestaMaiorCustoVertice(VerticeGrafo* verticeGrafo){
+    if(verticeGrafo == NULL){
+        return NULL;
+    }
+
+    int custoMaiorAresta = -1;
+    VerticeVizinho *vizinhoAtual = verticeGrafo->verticeVizinho, *vizinhoMaiorCusto = NULL;
+    while(vizinhoAtual != NULL){
+        if(vizinhoAtual->pesoAresta > custoMaiorAresta){
+            custoMaiorAresta = vizinhoAtual->pesoAresta;
+            vizinhoMaiorCusto = vizinhoAtual;
+        }
+
+        vizinhoAtual = vizinhoAtual->proximoVizinho;
+    }
+
+    return vizinhoMaiorCusto;
+}
+
+VerticeVizinho* getArestaMenorCustoVertice(VerticeGrafo* verticeGrafo){
+    if(verticeGrafo == NULL){
+        return NULL;
+    }
+
+    int custoMenorAresta = -1;
+    VerticeVizinho *vizinhoAtual = verticeGrafo->verticeVizinho, *vizinhoMenorCusto = NULL;
+    while(vizinhoAtual != NULL){
+        if(vizinhoAtual->pesoAresta < custoMenorAresta ||
+        custoMenorAresta == -1){
+            custoMenorAresta = vizinhoAtual->pesoAresta;
+            vizinhoMenorCusto = vizinhoAtual;
+        }
+
+        vizinhoAtual = vizinhoAtual->proximoVizinho;
+    }
+
+    return vizinhoMenorCusto;
+}
+
 //DEBUG!!!!!!!!!!!!!!!!!!!!!!!!!
 void imprimirGrafo(VerticeGrafo* grafo){
     VerticeGrafo* grafoAuxiliar = grafo;
