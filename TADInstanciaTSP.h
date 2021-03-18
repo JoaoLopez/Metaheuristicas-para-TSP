@@ -36,7 +36,7 @@ VerticeGrafo* getGrafoInstanciaTSP(InstanciaTSP* instanciaTSP);
 
 void setMelhorSolucaoInstanciaTSP(InstanciaTSP* instanciaTSP, NoTour* tour);
 
-void calcularCustoMelhorSolucaoInstanciaTSP(InstanciaTSP* InstanciaTSP);
+double calcularCustoSolucaoInstanciaTSP(InstanciaTSP* instanciaTSP, NoTour* tour);
 
 void salvarInstanciaTSP(InstanciaTSP* instanciaTSP, FILE* arquivo);
 

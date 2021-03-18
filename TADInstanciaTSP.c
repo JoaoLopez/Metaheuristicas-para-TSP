@@ -201,27 +201,38 @@ VerticeGrafo* getGrafoInstanciaTSP(InstanciaTSP* instanciaTSP){
 }
 
 void setMelhorSolucaoInstanciaTSP(InstanciaTSP* instanciaTSP, NoTour* tour){
-    instanciaTSP->melhorSolucao = tour;
-    calcularCustoMelhorSolucaoInstanciaTSP(instanciaTSP);
-}
-
-void calcularCustoMelhorSolucaoInstanciaTSP(InstanciaTSP* instanciaTSP){
     if(instanciaTSP->melhorSolucao == NULL){
-        instanciaTSP->custoMelhorSolucao = -1;
-        return;
+        instanciaTSP->melhorSolucao = tour;
+        instanciaTSP->custoMelhorSolucao = calcularCustoSolucaoInstanciaTSP(instanciaTSP, tour);
+        return;        
     }
 
-    double custoMelhorSolucao = 0, custoArestaAtual = -1;
+    double custoNovaSolucao = calcularCustoSolucaoInstanciaTSP(instanciaTSP, tour);
+
+    printf("Custo solução antiga: %lf\n", instanciaTSP->custoMelhorSolucao);
+    printf("Custo nova solução: %lf\n\n", custoNovaSolucao);
+
+    if(custoNovaSolucao < instanciaTSP->custoMelhorSolucao){
+        instanciaTSP->melhorSolucao = tour;
+        instanciaTSP->custoMelhorSolucao = custoNovaSolucao;
+    }
+}
+
+double calcularCustoSolucaoInstanciaTSP(InstanciaTSP* instanciaTSP, NoTour* tour){
+    if(instanciaTSP->grafo == NULL || tour == NULL){
+        return -1;
+    }
+
+    double custoSolucao = 0, custoArestaAtual = -1;
     NoTour *cidadeOrigem = NULL, *cidadeDestino = NULL;
 
     //O retorno dessa função nunca será NULL pois foi testado anteriormente
-    //se instanciaTSP->melhorSolucao era NULL. Como o resultado foi negativo
-    //instanciaTSP->melhorSolucao possui um tour completo. Logo, possui ao menos
-    //dois nós
-    cidadeOrigem = getNoTourPosicao(instanciaTSP->melhorSolucao, 0);
+    //se "tour" era NULL. Como o resultado foi negativo "tour" possui um tour completo.
+    //Logo, possui ao menos dois nós
+    cidadeOrigem = getNoTourPosicao(tour, 0);
     int i = 1;
     while(1){
-        cidadeDestino = getNoTourPosicao(instanciaTSP->melhorSolucao, i);
+        cidadeDestino = getNoTourPosicao(tour, i);
         i++;
 
         if(cidadeDestino == NULL){
@@ -230,16 +241,14 @@ void calcularCustoMelhorSolucaoInstanciaTSP(InstanciaTSP* instanciaTSP){
 
         custoArestaAtual = getPesoArestaGrafo(instanciaTSP->grafo, getIdTour(cidadeOrigem), getIdTour(cidadeDestino));
         if(custoArestaAtual == -1){
-            instanciaTSP->custoMelhorSolucao = -1;
-            return;
+            return -1;
         }
-        custoMelhorSolucao = custoMelhorSolucao + custoArestaAtual;
+        custoSolucao = custoSolucao + custoArestaAtual;
 
         cidadeOrigem = cidadeDestino;
     }
 
-    instanciaTSP->custoMelhorSolucao = custoMelhorSolucao;
-    return;
+    return custoSolucao;
 }
 
 void salvarInstanciaTSP(InstanciaTSP* instanciaTSP, FILE* arquivo){
