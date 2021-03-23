@@ -209,9 +209,6 @@ void setMelhorSolucaoInstanciaTSP(InstanciaTSP* instanciaTSP, NoTour* tour){
 
     double custoNovaSolucao = calcularCustoSolucaoInstanciaTSP(instanciaTSP, tour);
 
-    printf("Custo solução antiga: %lf\n", instanciaTSP->custoMelhorSolucao);
-    printf("Custo nova solução: %lf\n\n", custoNovaSolucao);
-
     if(custoNovaSolucao < instanciaTSP->custoMelhorSolucao){
         instanciaTSP->melhorSolucao = tour;
         instanciaTSP->custoMelhorSolucao = custoNovaSolucao;

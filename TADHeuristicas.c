@@ -301,10 +301,6 @@ int solucionarHeuristicaVizinhoMaisProximoDoisLadosRandomizada(InstanciaTSP* ins
         return ERRO_MEMORIA_INSUFICIENTE;
     }
 
-   
-    printf("idCidadeInicio: %d\n", idCidadeInicio);
-
-
     for(int i = 0; i < numeroCidades-1; i++){
         *statusOperacao = getCidadesAindaNaoInseridasTour(solucaoInstanciaTSP, grafo, vetorCidadesAindaNaoInseridasTour, tamanhoCidadesAindaNaoInseridas);
         if(*statusOperacao == ERRO_MEMORIA_INSUFICIENTE){
@@ -316,11 +312,6 @@ int solucionarHeuristicaVizinhoMaisProximoDoisLadosRandomizada(InstanciaTSP* ins
             return ERRO_MEMORIA_INSUFICIENTE;
         }
         cidadesAindaNaoInseridasTour = vetorCidadesAindaNaoInseridasTour[0];
-
-        printf("Imprimindo cidadesAindaNaoInseridasTour:\n");
-        for(int i = 0; i < *tamanhoCidadesAindaNaoInseridas; i++){
-            printf("idCidade: %d\n", cidadesAindaNaoInseridasTour[i]);
-        }
 
         *statusOperacao = criarVetoresPossiveisCidadesInseridas(verticeInicioTour, verticeFimTour, alpha, cidadesAindaNaoInseridasTour, *tamanhoCidadesAindaNaoInseridas, vetorInicioTour, tamanhoVetorInicioTour, vetorFimTour, tamanhoVetorFimTour);
 
@@ -346,17 +337,6 @@ int solucionarHeuristicaVizinhoMaisProximoDoisLadosRandomizada(InstanciaTSP* ins
         }
         possiveisCidadesInseridasInicioTour = vetorInicioTour[0];
         possiveisCidadesInseridasFimTour = vetorFimTour[0];
-
-        printf("Possíveis Cidades Inseridas Inicio Tour:\n");
-        for(int i = 0; i < *tamanhoVetorInicioTour; i++){
-            printf("idCidade: %d\n", possiveisCidadesInseridasInicioTour[i]->id);
-            printf("pesoAresta: %lf\n\n", possiveisCidadesInseridasInicioTour[i]->pesoAresta);
-        }
-        printf("Possíveis Cidades Inseridas Fim Tour:\n");
-        for(int i = 0; i < *tamanhoVetorFimTour; i++){
-            printf("idCidade: %d\n", possiveisCidadesInseridasFimTour[i]->id);
-            printf("pesoAresta: %lf\n\n", possiveisCidadesInseridasFimTour[i]->pesoAresta);
-        }
 
         //Testando se não há nenhuma cidade viável para ser incluída no tour
         if(*tamanhoVetorInicioTour == 0 && *tamanhoVetorFimTour == 0){
@@ -385,9 +365,6 @@ int solucionarHeuristicaVizinhoMaisProximoDoisLadosRandomizada(InstanciaTSP* ins
         *tamanhoVetorInicioTour = -1;
         possiveisCidadesInseridasFimTour = NULL;
         *tamanhoVetorFimTour = -1;
-
-        printf("numeroSorteado: %d\n", numeroSorteado);
-        printf("idCidadeSeraInserida: %d\n", idCidadeSeraInserida);
 
         //Inserindo cidade ao tour
         if(insercaoCidadeInicioTour){
@@ -442,7 +419,6 @@ int solucionarHeuristicaVizinhoMaisProximoDoisLadosRandomizada(InstanciaTSP* ins
 }
 
 int criarVetoresPossiveisCidadesInseridas(VerticeGrafo* verticeInicioTour, VerticeGrafo* verticeFimTour, double alpha, int* cidadesAindaNaoInseridasTour, int tamanhoVetorCidadesAindaNaoInseridas, VerticeVizinho*** possiveisCidadesInseridasInicioTour, int* tamanhoVetorInicioTour, VerticeVizinho*** possiveisCidadesInseridasFimTour, int* tamanhoVetorFimTour){
-    printf("#################CRIANDO VETORES#######################\n");
     if(verticeInicioTour == NULL && verticeFimTour == NULL){
         *tamanhoVetorInicioTour = -1;
         *tamanhoVetorFimTour = -1;
@@ -527,19 +503,6 @@ int criarVetoresPossiveisCidadesInseridas(VerticeGrafo* verticeInicioTour, Verti
         }
     }
 
-    printf("1ª Parte Concluída\n");
-    printf("possiveisCidadesInseridasInicioTour:\n");
-    for(int i = 0; i < *tamanhoVetorInicioTour; i++){
-        printf("idCidade: %d\n", possiveisCidadesInseridasInicioTour[0][i]->id);
-        printf("pesoAresta: %lf\n\n", possiveisCidadesInseridasInicioTour[0][i]->pesoAresta);
-    }
-    printf("possiveisCidadesInseridasFimTour:\n");
-    for(int i = 0; i < *tamanhoVetorFimTour; i++){
-        printf("idCidade: %d\n", possiveisCidadesInseridasFimTour[0][i]->id);
-        printf("pesoAresta: %lf\n\n", possiveisCidadesInseridasFimTour[0][i]->pesoAresta);
-    }
-
-
     //2º Buscando maior e menor peso dentre as arestas de
     //"possiveisCidadesInseridasInicioTour" e "possiveisCidadesInseridasFimTour"
     double custoMinimo = -1, custoMaximo = -1;
@@ -561,10 +524,6 @@ int criarVetoresPossiveisCidadesInseridas(VerticeGrafo* verticeInicioTour, Verti
             custoMinimo = possiveisCidadesInseridasFimTour[0][i]->pesoAresta;
         }
     }
-
-    printf("2ª Parte Concluída\n");
-    printf("custoMinimo: %lf\n", custoMinimo);
-    printf("custoMaximo: %lf\n", custoMaximo);
 
     //3º Retirando arestas que possuem peso fora dos padrão estipulado por "alpha"
     for(int i = 0; i < *tamanhoVetorInicioTour; i++){
@@ -643,19 +602,6 @@ int criarVetoresPossiveisCidadesInseridas(VerticeGrafo* verticeInicioTour, Verti
         }
     }
     
-    printf("3ª Parte Concluída\n");
-    printf("possiveisCidadesInseridasInicioTour:\n");
-    for(int i = 0; i < *tamanhoVetorInicioTour; i++){
-        printf("idCidade: %d\n", possiveisCidadesInseridasInicioTour[0][i]->id);
-        printf("pesoAresta: %lf\n\n", possiveisCidadesInseridasInicioTour[0][i]->pesoAresta);
-    }
-    printf("possiveisCidadesInseridasFimTour:\n");
-    for(int i = 0; i < *tamanhoVetorFimTour; i++){
-        printf("idCidade: %d\n", possiveisCidadesInseridasFimTour[0][i]->id);
-        printf("pesoAresta: %lf\n\n", possiveisCidadesInseridasFimTour[0][i]->pesoAresta);
-    }
-    printf("##################################################");
-
     return OK;
 }
 
