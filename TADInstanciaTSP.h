@@ -19,6 +19,7 @@ typedef struct instanciaTSP{
 }InstanciaTSP;
 
 #include "TADHeuristicas.h"
+#include "BuscaLocal.h"
 
 InstanciaTSP* criarInstanciaTSP(char* pathArquivoTSP, int* statusOperacao);
 
@@ -28,11 +29,17 @@ int solucionarInstanciaTSPHeuristicaVizinhoMaisProximoDoisLados(InstanciaTSP* in
 
 int solucionarInstanciaTSPHeuristicaVizinhoMaisProximoDoisLadosRandomizada(InstanciaTSP* instanciaTSP, double alpha);
 
+int melhorarSolucaoInstanciaTSPBuscaLocalPrimeiroAprimorante(InstanciaTSP* instanciaTSP);
+
+int melhorarSolucaoInstanciaTSPBuscaLocalMelhorAprimorante(InstanciaTSP* instanciaTSP);
+
 void deletarInstanciaTSP(InstanciaTSP* instanciaTSP);
 
 int getDimensaoInstanciaTSP(InstanciaTSP* instanciaTSP);
 
 VerticeGrafo* getGrafoInstanciaTSP(InstanciaTSP* instanciaTSP);
+
+void atualizarCustoMelhorSolucaoInstanciaTSPMovimentoBuscaLocal(InstanciaTSP* instanciaTSP, double saldoNovoCusto);
 
 void setMelhorSolucaoInstanciaTSP(InstanciaTSP* instanciaTSP, NoTour* tour);
 
@@ -41,6 +48,10 @@ double calcularCustoSolucaoInstanciaTSP(InstanciaTSP* instanciaTSP, NoTour* tour
 void salvarInstanciaTSP(InstanciaTSP* instanciaTSP, FILE* arquivo);
 
 char* getNomeInstanciaTSP(InstanciaTSP* instanciaTSP);
+
+double getCustoMelhorSolucaoInstanciaTSP(InstanciaTSP* instanciaTSP);
+
+NoTour* getMelhorSolucaoInstanciaTSP(InstanciaTSP* instanciaTSP);
 
 ///////////////////////DEBUG///////////////////////////////
 void imprimirInstanciaTSP(InstanciaTSP* instanciaTSP);

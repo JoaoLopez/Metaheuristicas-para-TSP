@@ -177,6 +177,14 @@ int solucionarInstanciaTSPHeuristicaVizinhoMaisProximoDoisLadosRandomizada(Insta
     return solucionarHeuristicaVizinhoMaisProximoDoisLadosRandomizada(instanciaTSP, alpha);
 }
 
+int melhorarSolucaoInstanciaTSPBuscaLocalPrimeiroAprimorante(InstanciaTSP* instanciaTSP){
+    return executarBuscaLocalPrimeiroAprimorante(instanciaTSP);
+}
+
+int melhorarSolucaoInstanciaTSPBuscaLocalMelhorAprimorante(InstanciaTSP* instanciaTSP){
+    return executarBuscaLocalMelhorAprimorante(instanciaTSP);
+}
+
 void deletarInstanciaTSP(InstanciaTSP* instanciaTSP){
     if(instanciaTSP == NULL){
         return;
@@ -198,6 +206,10 @@ int getDimensaoInstanciaTSP(InstanciaTSP* instanciaTSP){
 
 VerticeGrafo* getGrafoInstanciaTSP(InstanciaTSP* instanciaTSP){
     return instanciaTSP->grafo;
+}
+
+void atualizarCustoMelhorSolucaoInstanciaTSPMovimentoBuscaLocal(InstanciaTSP* instanciaTSP, double saldoNovoCusto){
+    instanciaTSP->custoMelhorSolucao = instanciaTSP->custoMelhorSolucao - saldoNovoCusto;
 }
 
 void setMelhorSolucaoInstanciaTSP(InstanciaTSP* instanciaTSP, NoTour* tour){
@@ -270,6 +282,14 @@ void salvarInstanciaTSP(InstanciaTSP* instanciaTSP, FILE* arquivo){
 
 char* getNomeInstanciaTSP(InstanciaTSP* instanciaTSP){
     return instanciaTSP->nome;
+}
+
+double getCustoMelhorSolucaoInstanciaTSP(InstanciaTSP* instanciaTSP){
+    return instanciaTSP->custoMelhorSolucao;
+}
+
+NoTour* getMelhorSolucaoInstanciaTSP(InstanciaTSP* instanciaTSP){
+    return instanciaTSP->melhorSolucao;
 }
 
 //////////////////DEBUG///////////////////////////////

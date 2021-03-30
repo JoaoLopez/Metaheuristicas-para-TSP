@@ -122,6 +122,62 @@ NoTour* inserirCidadeFimTour(int idCidade, NoTour* tour, int* statusOperacao){
     return tour;
 }
 
+int realizarMovimento2otimo(NoTour* tour, int cidadeOrigem1, int cidadeOrigem2){
+    if(!tourEstaCompleto(tour)){
+        return ERRO_TOUR_INVALIDO;
+    }
+
+    //Buscando nós do tour de origem e destino que serão alterados
+    NoTour *noTourOrigem1 = NULL, *noTourDestino1 = NULL;
+    NoTour *noTourOrigem2 = NULL, *noTourDestino2 = NULL;
+    NoTour* aux = tour;
+    while(aux != NULL){
+        if(aux->idCidade == cidadeOrigem1){
+            noTourOrigem1 = aux;
+            noTourDestino1 = aux->proximoNoTour;
+            break;
+        }
+        aux = aux->proximoNoTour;
+    }
+    if(noTourOrigem1 == NULL || noTourDestino1 == NULL){
+        return ERRO_CIDADE_NAO_ENCONTRADA;
+    }
+
+    while(aux != NULL){
+        if(aux->idCidade == cidadeOrigem2){
+            noTourOrigem2 = aux;
+            noTourDestino2 = aux->proximoNoTour;
+        }
+        aux = aux->proximoNoTour;
+    }
+    if(noTourOrigem2 == NULL || noTourDestino2 == NULL){
+        return ERRO_CIDADE_NAO_ENCONTRADA;
+    }
+
+    //Verificando se as arestas não são idênticas nem consecutivas
+    if(noTourOrigem1->idCidade == noTourOrigem2->idCidade ||
+    noTourDestino1->idCidade == noTourOrigem2->idCidade ||
+    noTourDestino2->idCidade == noTourOrigem1->idCidade){
+        return ERRO_CIDADES_INVALIDAS;
+    }
+
+    //Modificando o tour com o movimento 2-ótimo
+    noTourOrigem1->proximoNoTour = noTourOrigem2;
+    
+    aux = noTourDestino1->proximoNoTour;
+    NoTour *anterior = noTourDestino1, *proximo = aux->proximoNoTour;
+    while(proximo != noTourDestino2){
+        aux->proximoNoTour = anterior;
+        anterior = aux;
+        aux = proximo;
+        proximo = proximo->proximoNoTour;
+    }
+    aux->proximoNoTour = anterior;
+
+    noTourDestino1->proximoNoTour = noTourDestino2;
+    return OK;
+}
+
 NoTour* getNoTourPosicao(NoTour* tour, int posicao){
     int i = 0;
     while(i != posicao){

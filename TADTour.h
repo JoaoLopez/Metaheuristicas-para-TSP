@@ -18,6 +18,7 @@ int tourEstaCompleto(NoTour* tour);
 int insercaoCidadeTourValida(int idCidade, NoTour* tour, int insercaoInicioTour);
 NoTour* inserirCidadeInicioTour(int idCidade, NoTour* tour, int* statusOperacao);
 NoTour* inserirCidadeFimTour(int idCidade, NoTour* tour, int* statusOperacao);
+int realizarMovimento2otimo(NoTour* tour, int cidadeOrigem1, int cidadeOrigem2);
 NoTour* getNoTourPosicao(NoTour* tour, int posicao);
 NoTour* deletarCidadeTour(int idCidade, NoTour* tour);
 void deletarTour(NoTour* tour);
