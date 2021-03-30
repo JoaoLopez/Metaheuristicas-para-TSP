@@ -165,6 +165,47 @@ InstanciaTSP* criarInstanciaTSP(char* pathArquivoTSP, int* statusOperacao){
     return instanciaTSP;
 }
 
+int carregarSolucaoInstanciaTSP(char* pathArquivoSolucao, InstanciaTSP* instanciaTSP){
+    //Abrindo arquivo que contém a solução da instância TSP
+    FILE* arquivoSolucao = fopen(pathArquivoSolucao, "rt");
+    if(arquivoSolucao == NULL){
+        return ERRO_ABRIR_ARQUIVO;
+    }
+
+    int* statusOperacao = (int*) malloc(sizeof(int));
+    if(statusOperacao == NULL){
+        return ERRO_MEMORIA_INSUFICIENTE;
+    }
+
+    NoTour* solucao = criarTour();
+    int idCidadeAtual = -1;
+
+    fscanf(arquivoSolucao, "Tour\n");
+    for(int i = 0; i <= instanciaTSP->dimensao; i++){
+        fscanf(arquivoSolucao, "idCidade: %d\n", &idCidadeAtual);
+
+        solucao = inserirCidadeFimTour(idCidadeAtual, solucao, statusOperacao);
+        if(*statusOperacao != OK){
+            deletarTour(solucao);
+            free(statusOperacao);
+            fclose(arquivoSolucao);
+            return ERRO_CARREGAR_SOLUCAO;
+        }
+        
+        if(i + 1 <= instanciaTSP->dimensao){
+            fscanf(arquivoSolucao, "|\n");
+        }
+    }
+
+    instanciaTSP->melhorSolucao = solucao;
+    instanciaTSP->custoMelhorSolucao = calcularCustoSolucaoInstanciaTSP(instanciaTSP, solucao);
+
+    free(statusOperacao);
+    fclose(arquivoSolucao);
+
+    return OK;
+}
+
 int solucionarInstanciaTSPHeuristicaVizinhoMaisProximo(InstanciaTSP* instanciaTSP){
     return solucionarHeuristicaVizinhoMaisProximo(instanciaTSP);
 }

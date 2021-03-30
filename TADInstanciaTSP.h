@@ -23,6 +23,8 @@ typedef struct instanciaTSP{
 
 InstanciaTSP* criarInstanciaTSP(char* pathArquivoTSP, int* statusOperacao);
 
+int carregarSolucaoInstanciaTSP(char* pathArquivoSolucao, InstanciaTSP* instanciaTSP);
+
 int solucionarInstanciaTSPHeuristicaVizinhoMaisProximo(InstanciaTSP* instanciaTSP);
 
 int solucionarInstanciaTSPHeuristicaVizinhoMaisProximoDoisLados(InstanciaTSP* instanciaTSP);
