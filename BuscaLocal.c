@@ -68,23 +68,6 @@ int executarBuscaLocalPrimeiroAprimorante(InstanciaTSP* instanciaTSP){
             //Calculando saldo da nova solução
             saldoNovaSolucao = pesoAresta1 + pesoAresta2 - pesoNovaAresta1 - pesoNovaAresta2;
 
-            /////////////////DEBUG/////////////
-            system("clear");
-            system("clear");
-            printf("Solução atual:\n");
-            imprimirInstanciaTSP(instanciaTSP);
-            printf("\ncidadeOrigemAresta1: %d\n", cidadeOrigemAresta1);
-            printf("cidadeDestinoAresta1: %d\n\n", cidadeDestinoAresta1);
-            printf("cidadeOrigemAresta2: %d\n", cidadeOrigemAresta2);
-            printf("cidadeDestinoAresta2: %d\n\n", cidadeDestinoAresta2);
-            printf("pesoAresta1: %lf\n", pesoAresta1);
-            printf("pesoAresta2: %lf\n\n", pesoAresta2);
-            printf("pesoNovaAresta1: %lf\n", pesoNovaAresta1);
-            printf("pesoNovaAresta2: %lf\n\n", pesoNovaAresta2);
-            printf("saldoNovaSolucao: %lf\n", saldoNovaSolucao);
-            ///////////////////////////////////
-
-
             if(saldoNovaSolucao > 0){
                 int statusOperacao = realizarMovimento2otimo(melhorSolucao, cidadeOrigemAresta1, cidadeOrigemAresta2);
                 if(statusOperacao != OK && statusOperacao != ERRO_CIDADES_INVALIDAS){
@@ -95,25 +78,9 @@ int executarBuscaLocalPrimeiroAprimorante(InstanciaTSP* instanciaTSP){
                     atualizarCustoMelhorSolucaoInstanciaTSPMovimentoBuscaLocal(instanciaTSP, saldoNovaSolucao);
                     solucaoAprimorada = 1;
 
-                    /////////////////DEBUG/////////////
-                    printf("Solução Aprimorada:\n");
-                    imprimirInstanciaTSP(instanciaTSP);
-                    char c = 'N';
-                    while(c != 'S'){
-                        scanf("%c", &c);
-                    }
-                    ///////////////////////////////////
-
                     break;
                 }
             }
-
-            ////////////////////DEBUG//////////////
-            char c = 'N';
-            while(c != 'S'){
-                scanf("%c", &c);
-            }
-            //////////////////////////////////////
 
         }
 
@@ -123,15 +90,9 @@ int executarBuscaLocalPrimeiroAprimorante(InstanciaTSP* instanciaTSP){
     }
 
     if(solucaoAprimorada){
-        ///////////////DEBUG//////////
-        printf("CHAMADA RECURSIVA!");
-        //////////////////////////////
         return executarBuscaLocalPrimeiroAprimorante(instanciaTSP);
     }
     else{
-        ///////////////DEBUG//////////
-        printf("CHAMADA NÃO RECURSIVA!");
-        //////////////////////////////
         return OK;
     }
 }
@@ -215,31 +176,6 @@ int executarBuscaLocalMelhorAprimorante(InstanciaTSP* instanciaTSP){
                 melhorCidadeOrigemAresta1 = cidadeOrigemAresta1;
                 melhorCidadeOrigemAresta2 = cidadeOrigemAresta2;
             }
-
-            ////////////////////DEBUG//////////////
-            system("clear");
-            system("clear");
-            printf("Solução atual:\n");
-            imprimirInstanciaTSP(instanciaTSP);
-            printf("\ncidadeOrigemAresta1: %d\n", cidadeOrigemAresta1);
-            printf("cidadeDestinoAresta1: %d\n\n", cidadeDestinoAresta1);
-            printf("cidadeOrigemAresta2: %d\n", cidadeOrigemAresta2);
-            printf("cidadeDestinoAresta2: %d\n\n", cidadeDestinoAresta2);
-            printf("pesoAresta1: %lf\n", pesoAresta1);
-            printf("pesoAresta2: %lf\n\n", pesoAresta2);
-            printf("pesoNovaAresta1: %lf\n", pesoNovaAresta1);
-            printf("pesoNovaAresta2: %lf\n\n", pesoNovaAresta2);
-            printf("saldoNovaSolucao: %lf\n\n", saldoNovaSolucao);
-            printf("melhorSaldoNovaSolucao: %lf\n", melhorSaldoNovaSolucao);
-            printf("melhorCidadeOrigemAresta1: %d\n", melhorCidadeOrigemAresta1);
-            printf("melhorCidadeOrigemAresta2: %d\n", melhorCidadeOrigemAresta2);
-
-            char c = 'N';
-            while(c != 'S'){
-                scanf("%c", &c);
-            }
-            //////////////////////////////////////
-
         }
     }
 
@@ -249,18 +185,6 @@ int executarBuscaLocalMelhorAprimorante(InstanciaTSP* instanciaTSP){
         }
 
         atualizarCustoMelhorSolucaoInstanciaTSPMovimentoBuscaLocal(instanciaTSP, melhorSaldoNovaSolucao);
-
-        /////////////////DEBUG/////////////
-        system("clear");
-        system("clear");
-        printf("Solução Aprimorada:\n");
-        imprimirInstanciaTSP(instanciaTSP);
-        
-        char c = 'N';
-        while(c != 'S'){
-            scanf("%c", &c);
-        }
-        ///////////////////////////////////
 
         return executarBuscaLocalMelhorAprimorante(instanciaTSP);
     }
