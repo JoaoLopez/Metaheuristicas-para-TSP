@@ -1,6 +1,22 @@
 #include "BuscaLocal.h"
 
 int executarBuscaLocalPrimeiroAprimorante(InstanciaTSP* instanciaTSP){
+    double custoSolucaoAntiga = -1, custoSolucaoNova = -1;
+    int statusOperacao = -1;
+    do{
+        custoSolucaoAntiga = getCustoMelhorSolucaoInstanciaTSP(instanciaTSP);
+        statusOperacao = encontrarPrimeiroAprimoranteBuscaLocalMovimento2Otimo(instanciaTSP);
+        custoSolucaoNova = getCustoMelhorSolucaoInstanciaTSP(instanciaTSP);
+        
+        if(statusOperacao != OK){
+            return statusOperacao;
+        }
+    }while(custoSolucaoNova < custoSolucaoAntiga);
+    
+    return OK;
+}
+
+int encontrarPrimeiroAprimoranteBuscaLocalMovimento2Otimo(InstanciaTSP* instanciaTSP){
     int numeroCidades = getDimensaoInstanciaTSP(instanciaTSP);
 
     //Verificando se é possível fazer movimentos 2-ótimo nesse grafo
@@ -89,15 +105,26 @@ int executarBuscaLocalPrimeiroAprimorante(InstanciaTSP* instanciaTSP){
         }
     }
 
-    if(solucaoAprimorada){
-        return executarBuscaLocalPrimeiroAprimorante(instanciaTSP);
-    }
-    else{
-        return OK;
-    }
+    return OK;
 }
 
 int executarBuscaLocalMelhorAprimorante(InstanciaTSP* instanciaTSP){
+    double custoSolucaoAntiga = -1, custoSolucaoNova = -1;
+    int statusOperacao = -1;
+    do{
+        custoSolucaoAntiga = getCustoMelhorSolucaoInstanciaTSP(instanciaTSP);
+        statusOperacao = encontrarMelhorAprimoranteBuscaLocalMovimento2Otimo(instanciaTSP);
+        custoSolucaoNova = getCustoMelhorSolucaoInstanciaTSP(instanciaTSP);
+        
+        if(statusOperacao != OK){
+            return statusOperacao;
+        }
+    }while(custoSolucaoNova < custoSolucaoAntiga);
+    
+    return OK;
+}
+
+int encontrarMelhorAprimoranteBuscaLocalMovimento2Otimo(InstanciaTSP* instanciaTSP){
     int numeroCidades = getDimensaoInstanciaTSP(instanciaTSP);
 
     //Verificando se é possível fazer movimentos 2-ótimo nesse grafo
@@ -185,10 +212,7 @@ int executarBuscaLocalMelhorAprimorante(InstanciaTSP* instanciaTSP){
         }
 
         atualizarCustoMelhorSolucaoInstanciaTSPMovimentoBuscaLocal(instanciaTSP, melhorSaldoNovaSolucao);
+    }
 
-        return executarBuscaLocalMelhorAprimorante(instanciaTSP);
-    }
-    else{
-        return OK;
-    }
+    return OK;
 }
