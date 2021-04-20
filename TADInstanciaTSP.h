@@ -20,6 +20,7 @@ typedef struct instanciaTSP{
 
 #include "TADHeuristicas.h"
 #include "BuscaLocal.h"
+#include "GRASP.h"
 
 InstanciaTSP* criarInstanciaTSP(char* pathArquivoTSP, int* statusOperacao);
 
@@ -35,6 +36,8 @@ int melhorarSolucaoInstanciaTSPBuscaLocalPrimeiroAprimorante(InstanciaTSP* insta
 
 int melhorarSolucaoInstanciaTSPBuscaLocalMelhorAprimorante(InstanciaTSP* instanciaTSP);
 
+int solucionarInstanciaTSPGRASP(InstanciaTSP* instanciaTSP, int numeroRepeticoes, double alpha);
+
 void deletarInstanciaTSP(InstanciaTSP* instanciaTSP);
 
 int getDimensaoInstanciaTSP(InstanciaTSP* instanciaTSP);
@@ -42,6 +45,8 @@ int getDimensaoInstanciaTSP(InstanciaTSP* instanciaTSP);
 VerticeGrafo* getGrafoInstanciaTSP(InstanciaTSP* instanciaTSP);
 
 void atualizarCustoMelhorSolucaoInstanciaTSPMovimentoBuscaLocal(InstanciaTSP* instanciaTSP, double saldoNovoCusto);
+
+void apagarSolucaoInstanciaTSP(InstanciaTSP* instanciaTSP);
 
 void setMelhorSolucaoInstanciaTSP(InstanciaTSP* instanciaTSP, NoTour* tour);
 

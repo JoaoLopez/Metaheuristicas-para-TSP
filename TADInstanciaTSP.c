@@ -226,6 +226,10 @@ int melhorarSolucaoInstanciaTSPBuscaLocalMelhorAprimorante(InstanciaTSP* instanc
     return executarBuscaLocalMelhorAprimorante(instanciaTSP);
 }
 
+int solucionarInstanciaTSPGRASP(InstanciaTSP* instanciaTSP, int numeroRepeticoes, double alpha){
+    return executarGRASP(instanciaTSP, numeroRepeticoes, alpha);
+}
+
 void deletarInstanciaTSP(InstanciaTSP* instanciaTSP){
     if(instanciaTSP == NULL){
         return;
@@ -251,6 +255,11 @@ VerticeGrafo* getGrafoInstanciaTSP(InstanciaTSP* instanciaTSP){
 
 void atualizarCustoMelhorSolucaoInstanciaTSPMovimentoBuscaLocal(InstanciaTSP* instanciaTSP, double saldoNovoCusto){
     instanciaTSP->custoMelhorSolucao = instanciaTSP->custoMelhorSolucao - saldoNovoCusto;
+}
+
+void apagarSolucaoInstanciaTSP(InstanciaTSP* instanciaTSP){
+    instanciaTSP->melhorSolucao = NULL;
+    instanciaTSP->custoMelhorSolucao = -1;
 }
 
 void setMelhorSolucaoInstanciaTSP(InstanciaTSP* instanciaTSP, NoTour* tour){
