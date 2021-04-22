@@ -11,6 +11,8 @@ int executarGRASP(InstanciaTSP* instanciaTSP, int numeroRepeticoes, double alpha
     if(getMelhorSolucaoInstanciaTSP(instanciaTSP) != NULL){
         melhorSolucao = getMelhorSolucaoInstanciaTSP(instanciaTSP);
         melhorCusto = getCustoMelhorSolucaoInstanciaTSP(instanciaTSP);
+
+        apagarSolucaoInstanciaTSP(instanciaTSP);
     }
 
 
@@ -29,20 +31,6 @@ int executarGRASP(InstanciaTSP* instanciaTSP, int numeroRepeticoes, double alpha
             apagarSolucaoInstanciaTSP(instanciaTSP);
             return ERRO_EXECUTAR_BUSCA_LOCAL_INSTANCIA_TSP;
         }
-
-
-
-        ///////////////DEBUG
-        printf("MELHOR SOLUÇÃO ENCONTRADA:\n");
-        printf("Custo: %lf\n", instanciaTSP->custoMelhorSolucao);
-        imprimirTour(instanciaTSP->melhorSolucao);
-        printf("\nMELHOR SOLUÇÃO ATÉ AGORA:\n");
-        printf("Custo: %lf\n", melhorCusto);
-        printf("\n\n\n");
-        ///////////////////////////////
-
-
-
 
         if(getCustoMelhorSolucaoInstanciaTSP(instanciaTSP) < melhorCusto ||
         melhorCusto == -1){
