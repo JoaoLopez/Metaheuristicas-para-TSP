@@ -64,6 +64,9 @@ int main(int argc, char *argv[]){
         fclose(arquivoSaida);
 
 
+        apagarSolucaoInstanciaTSP(instanciaTSP);
+
+
         //Heurística do Vizinho Mais Próximo Pelos Dois Lados
         printf("Solucionando instância pela heurística do vizinho mais próximo pelos dois lados...\n");
         Tempo_CPU_Sistema(&segCPUInicial, &segSistemaInicial);

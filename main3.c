@@ -1,5 +1,5 @@
-#ifndef MAIN2_C
-#define MAIN2_C
+#ifndef MAIN3_C
+#define MAIN3_C
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -38,10 +38,10 @@ int main(int argc, char *argv[]){
             return codigoErro;
         }
 
-        for(int j = 0; j < 3; j++){
+        for(int j = 0; j < 2; j++){
             if(j == 0)  strcpy(solucaoBase, "HVMP");
             if(j == 1)  strcpy(solucaoBase, "HVMPDL");
-            if(j == 2)  strcpy(solucaoBase, "HVMPDL_0.1_500");
+            //if(j == 2)  strcpy(solucaoBase, "HVMPDL_0.1_500");
 
             //Busca local primeiro aprimorante a partir da solução utilizando HVMP
             strcpy(nomeArquivo, argv[i]);

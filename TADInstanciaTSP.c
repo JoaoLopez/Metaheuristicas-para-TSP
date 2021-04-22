@@ -131,7 +131,7 @@ InstanciaTSP* criarInstanciaTSP(char* pathArquivoTSP, int* statusOperacao){
             if(i != j){
                 ponto1 = vetorPontos[i];
                 ponto2 = vetorPontos[j];
-                distancia = calcularDistanciaPontos(ponto1, ponto2);
+                distancia = (int) (calcularDistanciaPontos(ponto1, ponto2) + 0.5);
 
                 *statusOperacao = inserirAresta(instanciaTSP->grafo, i+1, j+1, distancia);
                 if(*statusOperacao != OK){
