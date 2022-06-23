@@ -23,6 +23,7 @@ NoTour* getNoTourPosicao(NoTour* tour, int posicao);
 NoTour* deletarCidadeTour(int idCidade, NoTour* tour);
 void deletarArestasTour(NoTour* tour, int* arestas, int num_arestas, NoTour** subtours_gerados);
 NoTour* unirSubTours(NoTour* subtour1, NoTour* subtour2);
+NoTour* copiarTour(NoTour* tour, int* status);
 void deletarTour(NoTour* tour);
 void salvarTour(NoTour* tour, FILE* arquivo);
 int getIdTour(NoTour* tour);

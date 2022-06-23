@@ -258,6 +258,19 @@ NoTour* unirSubTours(NoTour* subtour1, NoTour* subtour2){
     return subtour1;
 }
 
+NoTour* copiarTour(NoTour* tour, int* status){
+    NoTour* copia = criarTour();
+    while(tour != NULL){
+        copia = inserirCidadeFimTour(tour->idCidade, copia, status);
+        if(*status != OK){
+            deletarTour(copia);
+            return NULL;
+        }
+        tour = tour->proximoNoTour;
+    }
+    return copia;
+}
+
 void deletarTour(NoTour* tour){
     if(tour != NULL){
         //O retorno da função "deletarCidadeTour" será NULL
