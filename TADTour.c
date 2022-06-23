@@ -191,6 +191,7 @@ NoTour* getNoTourPosicao(NoTour* tour, int posicao){
     return tour;
 }
 
+//Deleta todo o subtor iniciado com a cidade "idCidade"
 NoTour* deletarCidadeTour(int idCidade, NoTour* tour){
     if(tour == NULL){
         return tour;
@@ -225,6 +226,36 @@ NoTour* deletarCidadeTour(int idCidade, NoTour* tour){
     }
 
     return tour;
+}
+
+//As arestas devem estar ordenadas em ordem crescente
+void deletarArestasTour(NoTour* tour, int* arestas, int num_arestas, NoTour** subtours_gerados){
+    subtours_gerados[0] = tour;
+    NoTour *aux;
+    for(int i=0, j=1; i < num_arestas; i++){
+        while(j < arestas[i]){
+            tour = tour->proximoNoTour;
+            j++;
+        }
+        aux = tour->proximoNoTour;
+        tour->proximoNoTour = NULL;
+        tour = aux;
+
+        subtours_gerados[i+1] = tour;
+        j++;
+    }
+}
+
+NoTour* unirSubTours(NoTour* subtour1, NoTour* subtour2){
+    if(subtour1 == NULL)
+        return subtour2;
+
+    NoTour* aux = subtour1;
+    while(aux->proximoNoTour != NULL)
+        aux = aux->proximoNoTour;
+    aux->proximoNoTour = subtour2;
+    
+    return subtour1;
 }
 
 void deletarTour(NoTour* tour){
