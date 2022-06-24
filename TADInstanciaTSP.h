@@ -38,29 +38,29 @@ int melhorarSolucaoInstanciaTSPBuscaLocalMelhorAprimorante(InstanciaTSP* instanc
 
 int solucionarInstanciaTSPGRASP(InstanciaTSP* instanciaTSP, int numeroRepeticoes, double alpha);
 
-void deletarInstanciaTSP(InstanciaTSP* instanciaTSP);
-
-int getDimensaoInstanciaTSP(InstanciaTSP* instanciaTSP);
-
-VerticeGrafo* getGrafoInstanciaTSP(InstanciaTSP* instanciaTSP);
+double calcularCustoSolucaoInstanciaTSP(InstanciaTSP* instanciaTSP, NoTour* tour);
 
 void atualizarCustoMelhorSolucaoInstanciaTSPMovimentoBuscaLocal(InstanciaTSP* instanciaTSP, double saldoNovoCusto);
 
-void apagarSolucaoInstanciaTSP(InstanciaTSP* instanciaTSP);
+void salvarInstanciaTSP(InstanciaTSP* instanciaTSP, FILE* arquivo);
+
+void removerSolucaoInstanciaTSP(InstanciaTSP* instanciaTSP);
 
 void setMelhorSolucaoInstanciaTSP(InstanciaTSP* instanciaTSP, NoTour* tour);
-
-double calcularCustoSolucaoInstanciaTSP(InstanciaTSP* instanciaTSP, NoTour* tour);
-
-void salvarInstanciaTSP(InstanciaTSP* instanciaTSP, FILE* arquivo);
 
 char* getNomeInstanciaTSP(InstanciaTSP* instanciaTSP);
 
 double getCustoMelhorSolucaoInstanciaTSP(InstanciaTSP* instanciaTSP);
 
+VerticeGrafo* getGrafoInstanciaTSP(InstanciaTSP* instanciaTSP);
+
+int getDimensaoInstanciaTSP(InstanciaTSP* instanciaTSP);
+
 NoTour* getMelhorSolucaoInstanciaTSP(InstanciaTSP* instanciaTSP);
 
-///////////////////////DEBUG///////////////////////////////
+void deletarInstanciaTSP(InstanciaTSP* instanciaTSP);
+
+//////////////////DEBUG///////////////////////////////
 void imprimirInstanciaTSP(InstanciaTSP* instanciaTSP);
 
 #endif

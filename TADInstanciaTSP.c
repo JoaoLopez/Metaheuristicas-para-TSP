@@ -230,53 +230,6 @@ int solucionarInstanciaTSPGRASP(InstanciaTSP* instanciaTSP, int numeroRepeticoes
     return executarGRASP(instanciaTSP, numeroRepeticoes, alpha);
 }
 
-void deletarInstanciaTSP(InstanciaTSP* instanciaTSP){
-    if(instanciaTSP == NULL){
-        return;
-    }
-    
-    deletarTour(instanciaTSP->melhorSolucao);
-    deletarGrafo(instanciaTSP->grafo);
-    free(instanciaTSP->tipoPesoAresta);
-    free(instanciaTSP->tipo);
-    free(instanciaTSP->comentario);
-    free(instanciaTSP->nome);
-    free(instanciaTSP);
-    return;
-}
-
-int getDimensaoInstanciaTSP(InstanciaTSP* instanciaTSP){
-    return instanciaTSP->dimensao;
-}
-
-VerticeGrafo* getGrafoInstanciaTSP(InstanciaTSP* instanciaTSP){
-    return instanciaTSP->grafo;
-}
-
-void atualizarCustoMelhorSolucaoInstanciaTSPMovimentoBuscaLocal(InstanciaTSP* instanciaTSP, double saldoNovoCusto){
-    instanciaTSP->custoMelhorSolucao = instanciaTSP->custoMelhorSolucao - saldoNovoCusto;
-}
-
-void apagarSolucaoInstanciaTSP(InstanciaTSP* instanciaTSP){
-    instanciaTSP->melhorSolucao = NULL;
-    instanciaTSP->custoMelhorSolucao = -1;
-}
-
-void setMelhorSolucaoInstanciaTSP(InstanciaTSP* instanciaTSP, NoTour* tour){
-    if(instanciaTSP->melhorSolucao == NULL){
-        instanciaTSP->melhorSolucao = tour;
-        instanciaTSP->custoMelhorSolucao = calcularCustoSolucaoInstanciaTSP(instanciaTSP, tour);
-        return;        
-    }
-
-    double custoNovaSolucao = calcularCustoSolucaoInstanciaTSP(instanciaTSP, tour);
-
-    if(custoNovaSolucao < instanciaTSP->custoMelhorSolucao){
-        instanciaTSP->melhorSolucao = tour;
-        instanciaTSP->custoMelhorSolucao = custoNovaSolucao;
-    }
-}
-
 double calcularCustoSolucaoInstanciaTSP(InstanciaTSP* instanciaTSP, NoTour* tour){
     if(instanciaTSP->grafo == NULL || tour == NULL){
         return -1;
@@ -310,6 +263,10 @@ double calcularCustoSolucaoInstanciaTSP(InstanciaTSP* instanciaTSP, NoTour* tour
     return custoSolucao;
 }
 
+void atualizarCustoMelhorSolucaoInstanciaTSPMovimentoBuscaLocal(InstanciaTSP* instanciaTSP, double saldoNovoCusto){
+    instanciaTSP->custoMelhorSolucao = instanciaTSP->custoMelhorSolucao - saldoNovoCusto;
+}
+
 void salvarInstanciaTSP(InstanciaTSP* instanciaTSP, FILE* arquivo){
     fprintf(arquivo, "Instância TSP:\n");
     
@@ -330,6 +287,26 @@ void salvarInstanciaTSP(InstanciaTSP* instanciaTSP, FILE* arquivo){
     return;
 }
 
+void removerSolucaoInstanciaTSP(InstanciaTSP* instanciaTSP){
+    instanciaTSP->melhorSolucao = NULL;
+    instanciaTSP->custoMelhorSolucao = -1;
+}
+
+void setMelhorSolucaoInstanciaTSP(InstanciaTSP* instanciaTSP, NoTour* tour){
+    if(instanciaTSP->melhorSolucao == NULL){
+        instanciaTSP->melhorSolucao = tour;
+        instanciaTSP->custoMelhorSolucao = calcularCustoSolucaoInstanciaTSP(instanciaTSP, tour);
+        return;        
+    }
+
+    double custoNovaSolucao = calcularCustoSolucaoInstanciaTSP(instanciaTSP, tour);
+
+    if(custoNovaSolucao < instanciaTSP->custoMelhorSolucao){
+        instanciaTSP->melhorSolucao = tour;
+        instanciaTSP->custoMelhorSolucao = custoNovaSolucao;
+    }
+}
+
 char* getNomeInstanciaTSP(InstanciaTSP* instanciaTSP){
     return instanciaTSP->nome;
 }
@@ -338,8 +315,31 @@ double getCustoMelhorSolucaoInstanciaTSP(InstanciaTSP* instanciaTSP){
     return instanciaTSP->custoMelhorSolucao;
 }
 
+VerticeGrafo* getGrafoInstanciaTSP(InstanciaTSP* instanciaTSP){
+    return instanciaTSP->grafo;
+}
+
+int getDimensaoInstanciaTSP(InstanciaTSP* instanciaTSP){
+    return instanciaTSP->dimensao;
+}
+
 NoTour* getMelhorSolucaoInstanciaTSP(InstanciaTSP* instanciaTSP){
     return instanciaTSP->melhorSolucao;
+}
+
+void deletarInstanciaTSP(InstanciaTSP* instanciaTSP){
+    if(instanciaTSP == NULL){
+        return;
+    }
+    
+    deletarTour(instanciaTSP->melhorSolucao);
+    deletarGrafo(instanciaTSP->grafo);
+    free(instanciaTSP->tipoPesoAresta);
+    free(instanciaTSP->tipo);
+    free(instanciaTSP->comentario);
+    free(instanciaTSP->nome);
+    free(instanciaTSP);
+    return;
 }
 
 //////////////////DEBUG///////////////////////////////
