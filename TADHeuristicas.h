@@ -23,6 +23,8 @@ int verticeVizinhoPrecisaSerAtualizadoHeuristicaVizinhoMaisProximoDoisLados(Vert
 
 int solucionarHeuristicaVizinhoMaisProximoDoisLadosRandomizada(InstanciaTSP* instanciaTSP, double alpha);
 
+void getVetorPossiveisCidadesEscolhidas(int cidade, VerticeGrafo* grafo, int* cidadesVisitadas, int numCidadesVisitadas, double alpha, int* possiveisCidadesEscolhidas, int* numPossiveisCidadesEscolhidas);
+
 int criarVetoresPossiveisCidadesInseridas(VerticeGrafo* verticeInicioTour, VerticeGrafo* verticeFimTour, double alpha, int* cidadesAindaNaoInseridasTour, int tamanhoVetorCidadesAindaNaoInseridas, VerticeVizinho*** possiveisCidadesInseridasInicioTour, int* tamanhoVetorInicioTour, VerticeVizinho*** possiveisCidadesInseridasFimTour, int* tamanhoVetorFimTour);
 
 int getCidadesAindaNaoInseridasTour(NoTour* tour, VerticeGrafo* grafo, int** cidadesAindaNaoInseridasTour, int* tamanhoVetor);

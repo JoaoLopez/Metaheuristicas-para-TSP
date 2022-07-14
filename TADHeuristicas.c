@@ -151,191 +151,96 @@ int solucionarHeuristicaVizinhoMaisProximoDoisLados(InstanciaTSP* instanciaTSP){
     return OK;
 }
 
-int verticeVizinhoPrecisaSerAtualizadoHeuristicaVizinhoMaisProximoDoisLados(VerticeVizinho* verticeVizinho, int idCidade){
-    if(verticeVizinho == NULL){
-        return 0;
-    }
-    if(verticeVizinho->id == idCidade){
-        return 1;
-    }
-    return 0;
-}
-
 int solucionarHeuristicaVizinhoMaisProximoDoisLadosRandomizada(InstanciaTSP* instanciaTSP, double alpha){
-    int* statusOperacao = (int*) malloc(sizeof(int));
-    if(statusOperacao == NULL){
-        return ERRO_MEMORIA_INSUFICIENTE;
-    }
+    int numCidades = getDimensaoInstanciaTSP(instanciaTSP);
+    VerticeGrafo* grafo = instanciaTSP->grafo;
+    int statusOperacao, cidadeInicial, cidadeFinal, cidadesVisitadas[numCidades];
+    
+    //Ordenando arestas do grafo pelos pesos
+    ordenarPesosArestasGrafo(grafo);
 
-    //Sorteando vértice do grafo pelo qual o algoritmo começará
-    int numeroCidades = getDimensaoInstanciaTSP(instanciaTSP);
-    int idCidadeInicio = sortearNumeroAleatorio(1, numeroCidades);
-
-    //Adicionando vértice à solução
-    NoTour* solucaoInstanciaTSP = criarTour();
-    solucaoInstanciaTSP = inserirCidadeFimTour(idCidadeInicio, solucaoInstanciaTSP, statusOperacao);
-    if(*statusOperacao == ERRO_MEMORIA_INSUFICIENTE ||
-    *statusOperacao == ERRO_INSERCAO_CIDADE_TOUR_INVALIDA){
-        int codigoErro = *statusOperacao;
-        free(statusOperacao);
-        deletarTour(solucaoInstanciaTSP);
-        return codigoErro;
+    //Inicializando a solução e incluindo a cidade de partida nela
+    cidadeInicial = sortearNumeroAleatorio(1, numCidades);
+    NoTour* solucao = criarTour();
+    solucao = inserirCidadeFimTour(cidadeInicial, solucao, &statusOperacao);
+    if(statusOperacao != OK){
+        deletarTour(solucao);
+        return statusOperacao;
     }
+    cidadesVisitadas[0] = cidadeInicial;
 
-    //Recuperando grafo da instância de TSP e ordenando todas as suas
-    //arestas em ordem crescente de peso
-    VerticeGrafo* grafo = getGrafoInstanciaTSP(instanciaTSP);
-    if(grafo == NULL){
-        free(statusOperacao);
-        deletarTour(solucaoInstanciaTSP);
-        return ERRO_GRAFO_INSTANCIA_TSP_VAZIO;
-    }
-
-    VerticeGrafo* verticeInicioTour = getVerticeGrafo(grafo, idCidadeInicio);
-    VerticeGrafo* verticeFimTour = getVerticeGrafo(grafo, idCidadeInicio);
-    int idCidadeSeraInserida = -1, insercaoCidadeInicioTour = -1, numeroSorteado = -1;
-
-    VerticeVizinho **vetorInicioTour[1] = {NULL}, **vetorFimTour[1] = {NULL};
-    VerticeVizinho **possiveisCidadesInseridasInicioTour = NULL, **possiveisCidadesInseridasFimTour = NULL;
-    int *tamanhoVetorInicioTour = (int*) malloc(sizeof(int));
-    if(tamanhoVetorInicioTour == NULL){
-        free(statusOperacao);
-        deletarTour(solucaoInstanciaTSP);
-        return ERRO_MEMORIA_INSUFICIENTE;
-    }
-    int *tamanhoVetorFimTour = (int*) malloc(sizeof(int));
-    if(tamanhoVetorFimTour == NULL){
-        free(tamanhoVetorInicioTour);
-        free(statusOperacao);
-        deletarTour(solucaoInstanciaTSP);
-        return ERRO_MEMORIA_INSUFICIENTE;
-    }
-    int* vetorCidadesAindaNaoInseridasTour[1] = {NULL}, *cidadesAindaNaoInseridasTour = NULL;
-    int* tamanhoCidadesAindaNaoInseridas = (int*) malloc(sizeof(int));
-    if(tamanhoCidadesAindaNaoInseridas == NULL){
-        free(tamanhoVetorInicioTour);
-        free(tamanhoVetorFimTour);
-        free(statusOperacao);
-        deletarTour(solucaoInstanciaTSP);
-        return ERRO_MEMORIA_INSUFICIENTE;
-    }
-
-    for(int i = 0; i < numeroCidades-1; i++){
-        *statusOperacao = getCidadesAindaNaoInseridasTour(solucaoInstanciaTSP, grafo, vetorCidadesAindaNaoInseridasTour, tamanhoCidadesAindaNaoInseridas);
-        if(*statusOperacao == ERRO_MEMORIA_INSUFICIENTE){
-            free(tamanhoCidadesAindaNaoInseridas);
-            free(tamanhoVetorInicioTour);
-            free(tamanhoVetorFimTour);
-            free(statusOperacao);
-            deletarTour(solucaoInstanciaTSP);
-            return ERRO_MEMORIA_INSUFICIENTE;
+    cidadeFinal = cidadeInicial;
+    VerticeVizinho *aux1, *aux2;
+    for(int i=1; i < numCidades; i++){
+        aux1 = getVerticeGrafo(grafo, cidadeFinal)->verticeVizinho;        
+        while(1){
+            if(!elementoEstaVetor(aux1->id, cidadesVisitadas, i)){
+                break;
+            }
+            aux1 = aux1->proximoVizinho;
         }
-        cidadesAindaNaoInseridasTour = vetorCidadesAindaNaoInseridasTour[0];
-
-        *statusOperacao = criarVetoresPossiveisCidadesInseridas(verticeInicioTour, verticeFimTour, alpha, cidadesAindaNaoInseridasTour, *tamanhoCidadesAindaNaoInseridas, vetorInicioTour, tamanhoVetorInicioTour, vetorFimTour, tamanhoVetorFimTour);
-
-        free(cidadesAindaNaoInseridasTour);
-        cidadesAindaNaoInseridasTour = NULL;
-        *tamanhoCidadesAindaNaoInseridas = -1;
-
-        if(*statusOperacao == ERRO_VERTICES_INVALIDOS){
-            free(tamanhoCidadesAindaNaoInseridas);
-            free(tamanhoVetorInicioTour);
-            free(tamanhoVetorFimTour);
-            free(statusOperacao);
-            deletarTour(solucaoInstanciaTSP);
-            return ERRO_GERAR_VETORES_POSSIVEIS_CIDADES_INSERIDAS;
+        aux2 = getVerticeGrafo(grafo, cidadeInicial)->verticeVizinho;
+        while(1){
+            if(!elementoEstaVetor(aux2->id, cidadesVisitadas, i)){
+                break;
+            }
+            aux2 = aux2->proximoVizinho;
         }
-        if(*statusOperacao == ERRO_MEMORIA_INSUFICIENTE){
-            free(tamanhoCidadesAindaNaoInseridas);
-            free(tamanhoVetorInicioTour);
-            free(tamanhoVetorFimTour);
-            free(statusOperacao);
-            deletarTour(solucaoInstanciaTSP);
-            return ERRO_MEMORIA_INSUFICIENTE;
-        }
-        possiveisCidadesInseridasInicioTour = vetorInicioTour[0];
-        possiveisCidadesInseridasFimTour = vetorFimTour[0];
-
-        //Testando se não há nenhuma cidade viável para ser incluída no tour
-        if(*tamanhoVetorInicioTour == 0 && *tamanhoVetorFimTour == 0){
-            free(tamanhoCidadesAindaNaoInseridas);
-            free(possiveisCidadesInseridasInicioTour);
-            free(possiveisCidadesInseridasFimTour);
-            free(tamanhoVetorFimTour);
-            free(tamanhoVetorInicioTour);
-            free(statusOperacao);
-            deletarTour(solucaoInstanciaTSP);
-            return ERRO_IMPOSSIVEL_GERAR_TOUR_GRAFO_INSTANCIA_TSP;
-        }
-
-        numeroSorteado = sortearNumeroAleatorio(1, *tamanhoVetorInicioTour + *tamanhoVetorFimTour);
-        if(numeroSorteado > *tamanhoVetorInicioTour){
-            insercaoCidadeInicioTour = 0;
-            idCidadeSeraInserida = possiveisCidadesInseridasFimTour[numeroSorteado - *tamanhoVetorInicioTour - 1]->id;
+        if(aux1->pesoAresta <= aux2->pesoAresta){ 
+            solucao = inserirCidadeFimTour(aux1->id, solucao, &statusOperacao);
+            cidadesVisitadas[i] =  aux1->id;
+            cidadeFinal = aux1->id;
         }
         else{
-            insercaoCidadeInicioTour = 1;
-            idCidadeSeraInserida = possiveisCidadesInseridasInicioTour[numeroSorteado - 1]->id;
+            solucao = inserirCidadeInicioTour(aux2->id, solucao, &statusOperacao);
+            cidadesVisitadas[i] =  aux2->id;
+            cidadeInicial = aux2->id;
         }
-        free(possiveisCidadesInseridasInicioTour);
-        free(possiveisCidadesInseridasFimTour);
-        possiveisCidadesInseridasInicioTour = NULL;
-        *tamanhoVetorInicioTour = -1;
-        possiveisCidadesInseridasFimTour = NULL;
-        *tamanhoVetorFimTour = -1;
-
-        //Inserindo cidade ao tour
-        if(insercaoCidadeInicioTour){
-            solucaoInstanciaTSP = inserirCidadeInicioTour(idCidadeSeraInserida, solucaoInstanciaTSP, statusOperacao);
+        if(statusOperacao != OK){
+            deletarTour(solucao);
+            return statusOperacao;
         }
-        else{
-            solucaoInstanciaTSP = inserirCidadeFimTour(idCidadeSeraInserida, solucaoInstanciaTSP, statusOperacao);
-        }
-        if(*statusOperacao == ERRO_INSERCAO_CIDADE_TOUR_INVALIDA ||
-        *statusOperacao == ERRO_MEMORIA_INSUFICIENTE){
-            int codigoErro = *statusOperacao;
-            free(tamanhoCidadesAindaNaoInseridas);
-            free(tamanhoVetorFimTour);
-            free(tamanhoVetorInicioTour);
-            free(statusOperacao);
-            deletarTour(solucaoInstanciaTSP);
-            return codigoErro;
-        }
-
-        if(insercaoCidadeInicioTour){
-            //Não há risco de "getVerticeGrafo" retornar NULL pois
-            //estamos buscando o vértice de destino de uma aresta que
-            //se encontra no grafo
-            verticeInicioTour = getVerticeGrafo(grafo, idCidadeSeraInserida);                
-        }
-        else{
-            //Não há risco de "getVerticeGrafo" retornar NULL pois
-            //estamos buscando o vértice de destino de uma aresta que
-            //se encontra no grafo
-            verticeFimTour = getVerticeGrafo(grafo, idCidadeSeraInserida);
-        }            
     }
 
-    free(tamanhoCidadesAindaNaoInseridas);
-    free(tamanhoVetorFimTour);
-    free(tamanhoVetorInicioTour);
-
-    //Inserindo última cidade ao tour (a cidade de início)
-    solucaoInstanciaTSP = inserirCidadeFimTour(verticeInicioTour->id, solucaoInstanciaTSP, statusOperacao);
-    if(*statusOperacao == ERRO_MEMORIA_INSUFICIENTE ||
-    *statusOperacao == ERRO_INSERCAO_CIDADE_TOUR_INVALIDA){
-        int codigoErro = *statusOperacao;
-        free(statusOperacao);
-        deletarTour(solucaoInstanciaTSP);
-        return codigoErro;
+    solucao = inserirCidadeFimTour(getIdTour(solucao), solucao, &statusOperacao);
+    if(statusOperacao != OK){
+        deletarTour(solucao);
+        return statusOperacao;
     }
 
-    free(statusOperacao);
-    setMelhorSolucaoInstanciaTSP(instanciaTSP, solucaoInstanciaTSP);
-
+    removerSolucaoInstanciaTSP(instanciaTSP);
+    setMelhorSolucaoInstanciaTSP(instanciaTSP, solucao);
     return OK;
 }
+
+void getVetorPossiveisCidadesEscolhidas(int cidade, VerticeGrafo* grafo, int* cidadesVisitadas, int numCidadesVisitadas, double alpha, int* possiveisCidadesEscolhidas, int* numPossiveisCidadesEscolhidas){
+    ordenarPesosArestasGrafo(grafo);
+    VerticeVizinho* aux1 = getVerticeGrafo(grafo, cidade)->verticeVizinho;
+    VerticeVizinho* melhorVizinho = aux1;
+    while(1){
+        if(!elementoEstaVetor(melhorVizinho->id, cidadesVisitadas, numCidadesVisitadas)){
+            break;
+        }
+        melhorVizinho = melhorVizinho->proximoVizinho;
+    }
+    
+    *numPossiveisCidadesEscolhidas = 0;
+    while(aux1 != NULL){
+        if(!elementoEstaVetor(aux1->id, cidadesVisitadas, numCidadesVisitadas)){
+            if(aux1->pesoAresta <= melhorVizinho->pesoAresta*(1 + alpha)){
+                possiveisCidadesEscolhidas[*numPossiveisCidadesEscolhidas] = aux1->id;
+                *numPossiveisCidadesEscolhidas += 1;
+            }
+            else{
+                return;
+            }
+        }
+        aux1 = aux1->proximoVizinho;
+    }
+}
+
+
+
 
 int criarVetoresPossiveisCidadesInseridas(VerticeGrafo* verticeInicioTour, VerticeGrafo* verticeFimTour, double alpha, int* cidadesAindaNaoInseridasTour, int tamanhoVetorCidadesAindaNaoInseridas, VerticeVizinho*** possiveisCidadesInseridasInicioTour, int* tamanhoVetorInicioTour, VerticeVizinho*** possiveisCidadesInseridasFimTour, int* tamanhoVetorFimTour){
     if(verticeInicioTour == NULL && verticeFimTour == NULL){
