@@ -1,5 +1,6 @@
 #include "TADHeuristicas.h"
 
+//////////////NÃO TESTADA!
 int solucionarHeuristicaVizinhoMaisProximo(InstanciaTSP* instanciaTSP){
     int* statusOperacao = (int*) malloc(sizeof(int));
     if(statusOperacao == NULL){
