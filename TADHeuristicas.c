@@ -169,10 +169,6 @@ int solucionarHeuristicaVizinhoMaisProximoDoisLadosRandomizada(InstanciaTSP* ins
     }
     cidadesVisitadas[0] = cidadeInicial;
 
-
-imprimirGrafo(grafo);
-
-
     cidadeFinal = cidadeInicial;
     int escolhasInicio[numCidades], numEscolhasInicio, escolhasFim[numCidades], numEscolhasFim;
     for(int i=1; i < numCidades; i++){
@@ -198,20 +194,6 @@ imprimirGrafo(grafo);
             deletarTour(solucao);
             return statusOperacao;
         }
-
-
-printf("Cidade inicial: %d  escolhasPossiveis: ", cidadeInicial);
-for(int i=0; i < numEscolhasInicio; i++)
-    printf("%d, ", escolhasInicio[i]);
-printf("\n");
-printf("Cidade final: %d  escolhasPossiveis: ", cidadeFinal);
-for(int i=0; i < numEscolhasFim; i++)
-    printf("%d, ", escolhasFim[i]);
-printf("\n");
-printf("Nova cidade inserida: %d\n", cidadesVisitadas[i]);
-
-
-
     }
 
     solucao = inserirCidadeFimTour(getIdTour(solucao), solucao, &statusOperacao);
