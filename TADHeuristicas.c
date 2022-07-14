@@ -90,6 +90,76 @@ int solucionarHeuristicaVizinhoMaisProximo(InstanciaTSP* instanciaTSP){
 }
 
 int solucionarHeuristicaVizinhoMaisProximoDoisLados(InstanciaTSP* instanciaTSP){
+    int numCidades = getDimensaoInstanciaTSP(instanciaTSP);
+    VerticeGrafo* grafo = instanciaTSP->grafo;
+    int statusOperacao, cidadeInicial, cidadeFinal, cidadesVisitadas[numCidades];
+    
+    //Ordenando arestas do grafo pelos pesos
+    ordenarPesosArestasGrafo(grafo);
+
+
+imprimirGrafo(grafo);
+
+
+
+    //Inicializando a solução e incluindo a cidade de partida nela
+    cidadeInicial = sortearNumeroAleatorio(1, numCidades);
+    NoTour* solucao = criarTour();
+    solucao = inserirCidadeFimTour(cidadeInicial, solucao, &statusOperacao);
+    if(statusOperacao != OK){
+        deletarTour(solucao);
+        return statusOperacao;
+    }
+    cidadesVisitadas[0] = cidadeInicial;
+
+    cidadeFinal = cidadeInicial;
+    VerticeVizinho *aux1, *aux2;
+    for(int i=1; i < numCidades; i++){
+
+
+printf("CidadeInicial: %d CidadeFinal: %d\n", cidadeInicial, cidadeFinal);
+
+
+        aux1 = getVerticeGrafo(grafo, cidadeFinal)->verticeVizinho;        
+        while(1){
+            if(!elementoEstaVetor(aux1->id, cidadesVisitadas, i)){
+                break;
+            }
+            aux1 = aux1->proximoVizinho;
+        }
+        aux2 = getVerticeGrafo(grafo, cidadeInicial)->verticeVizinho;
+        while(1){
+            if(!elementoEstaVetor(aux2->id, cidadesVisitadas, i)){
+                break;
+            }
+            aux2 = aux2->proximoVizinho;
+        }
+        if(aux1->pesoAresta <= aux2->pesoAresta){ 
+            solucao = inserirCidadeFimTour(aux1->id, solucao, &statusOperacao);
+            cidadesVisitadas[i] =  aux1->id;
+            cidadeFinal = aux1->id;
+        }
+        else{
+            solucao = inserirCidadeInicioTour(aux2->id, solucao, &statusOperacao);
+            cidadesVisitadas[i] =  aux2->id;
+            cidadeInicial = aux2->id;
+        }
+        if(statusOperacao != OK){
+            deletarTour(solucao);
+            return statusOperacao;
+        }
+    }
+
+    solucao = inserirCidadeFimTour(getIdTour(solucao), solucao, &statusOperacao);
+    if(statusOperacao != OK){
+        deletarTour(solucao);
+        return statusOperacao;
+    }
+
+    removerSolucaoInstanciaTSP(instanciaTSP);
+    setMelhorSolucaoInstanciaTSP(instanciaTSP, solucao);
+    return OK;
+    /*
     int* statusOperacao = (int*) malloc(sizeof(int));
     if(statusOperacao == NULL){
         return ERRO_MEMORIA_INSUFICIENTE;
@@ -230,6 +300,7 @@ int solucionarHeuristicaVizinhoMaisProximoDoisLados(InstanciaTSP* instanciaTSP){
     free(statusOperacao);
     setMelhorSolucaoInstanciaTSP(instanciaTSP, solucaoInstanciaTSP);
     return OK;
+    */
 }
 
 int verticeVizinhoPrecisaSerAtualizadoHeuristicaVizinhoMaisProximoDoisLados(VerticeVizinho* verticeVizinho, int idCidade){
