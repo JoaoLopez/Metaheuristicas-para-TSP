@@ -4,6 +4,5 @@
 #include "TADTour.h"
 #include "TADErro.h"
 
-int executarILS(InstanciaTSP* instanciaTSP, int numeroRepeticoes);
-
+int executarILS(InstanciaTSP* instanciaTSP, int numeroRepeticoes, double alpha);
 void perturbarSolucao(InstanciaTSP* instanciaTSP);
