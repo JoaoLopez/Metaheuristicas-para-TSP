@@ -177,10 +177,14 @@ int carregarSolucaoInstanciaTSP(char* pathArquivoSolucao, InstanciaTSP* instanci
         return ERRO_MEMORIA_INSUFICIENTE;
     }
 
+    char aux[100];
+    do{
+        fgets(aux, 100, arquivoSolucao);
+    }while(strcmp(aux, "instanciaTSP->melhorSolucao:\n") != 0);
+    fscanf(arquivoSolucao, "Tour\n");
+    
     NoTour* solucao = criarTour();
     int idCidadeAtual = -1;
-
-    fscanf(arquivoSolucao, "Tour\n");
     for(int i = 0; i <= instanciaTSP->dimensao; i++){
         fscanf(arquivoSolucao, "idCidade: %d\n", &idCidadeAtual);
 

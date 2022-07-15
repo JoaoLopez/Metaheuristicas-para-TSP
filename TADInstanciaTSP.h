@@ -6,6 +6,7 @@
 #include "TADTour.h"
 #include "TADErro.h"
 #include <stdlib.h>
+#include <string.h>
 
 typedef struct instanciaTSP{
     char* nome;
