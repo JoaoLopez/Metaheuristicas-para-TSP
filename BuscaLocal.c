@@ -3,7 +3,18 @@
 int executarBuscaLocalPrimeiroAprimorante(InstanciaTSP* instanciaTSP){
     double custoSolucaoAntiga = -1, custoSolucaoNova = -1;
     int statusOperacao = -1;
+
+
+imprimirGrafo(instanciaTSP->grafo);
+
+
     do{
+
+
+
+printf("---------------------------- NOVA ITERAÇÃO ----------------------------\n");
+
+
         custoSolucaoAntiga = getCustoMelhorSolucaoInstanciaTSP(instanciaTSP);
         statusOperacao = encontrarPrimeiroAprimoranteBuscaLocalMovimento2Otimo(instanciaTSP);
         custoSolucaoNova = getCustoMelhorSolucaoInstanciaTSP(instanciaTSP);
@@ -13,6 +24,11 @@ int executarBuscaLocalPrimeiroAprimorante(InstanciaTSP* instanciaTSP){
         }
     }while(custoSolucaoNova < custoSolucaoAntiga);
     
+
+
+imprimirTour(instanciaTSP->melhorSolucao);
+
+
     return OK;
 }
 
@@ -84,7 +100,16 @@ int encontrarPrimeiroAprimoranteBuscaLocalMovimento2Otimo(InstanciaTSP* instanci
             //Calculando saldo da nova solução
             saldoNovaSolucao = pesoAresta1 + pesoAresta2 - pesoNovaAresta1 - pesoNovaAresta2;
 
+
+printf("Cidades iniciais da troca: %d %d    Saldo: %lf\n", cidadeOrigemAresta1, cidadeOrigemAresta2, saldoNovaSolucao);
+
+
             if(saldoNovaSolucao > 0){
+
+
+printf("\nSolução Atualizada!\n\n");
+
+
                 int statusOperacao = realizarMovimento2otimo(melhorSolucao, cidadeOrigemAresta1, cidadeOrigemAresta2);
                 if(statusOperacao != OK && statusOperacao != ERRO_CIDADES_INVALIDAS){
                     return ERRO_REALIZAR_MOVIMENTO_2_OTIMO;
