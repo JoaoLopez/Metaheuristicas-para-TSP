@@ -166,23 +166,9 @@ void perturbarSolucao(InstanciaTSP* instanciaTSP){
     NoTour* subtoursGerados[numModificacoes+1];
     sortearNumerosAleatoriosDistintos(numModificacoes, 1, numCidades, arestasSorteadas);
     ordenar_vetor(arestasSorteadas, numModificacoes);
-
-
-imprimirTour(instanciaTSP->melhorSolucao);
-
     deletarArestasTour(getMelhorSolucaoInstanciaTSP(instanciaTSP), arestasSorteadas, numModificacoes, subtoursGerados);
     int subtour_i, subtour_j, lim_sup = numModificacoes;
     NoTour* aux;
-    
-    
-printf("porcent: %lf\n", porcentModificacao);
-printf("numModificacoes: %d\n", numModificacoes);
-for(int i=0; i < numModificacoes+1; i++){
-    printf("Imprimindo subtour_gerado[%d]:\n", i);
-    imprimirTour(subtoursGerados[i]);
-    printf("\n\n");
-}
-
     while(lim_sup > 2){
         //O primeiro e o último subtours precisam ser unidos sempre à esquerda e à direita
         //respectivamente. Por isso são excluidos das uniões aleatórias
@@ -190,22 +176,12 @@ for(int i=0; i < numModificacoes+1; i++){
         subtour_j = sortearNumeroAleatorio(1, lim_sup-2);
         if(sortearNumeroAleatorio(0, 1)){
             aux = unirSubTours(subtoursGerados[subtour_i], subtoursGerados[subtour_j]);
-
-printf("i -> j: ");
-
         }
         else{
             aux = unirSubTours(subtoursGerados[subtour_j], subtoursGerados[subtour_i]);
-
-printf("j -> i: ");
-
-
         }
         subtoursGerados[subtour_j] = aux;
         lim_sup -= 1;
-        
-printf("i: %d   j: %d\n", subtour_i, subtour_j);
-
     }
 
     aux = unirSubTours(subtoursGerados[0], subtoursGerados[1]);
@@ -214,8 +190,5 @@ printf("i: %d   j: %d\n", subtour_i, subtour_j);
 
     removerSolucaoInstanciaTSP(instanciaTSP);
     setMelhorSolucaoInstanciaTSP(instanciaTSP, aux);
-
-imprimirTour(instanciaTSP->melhorSolucao);
-
     return;
 }
