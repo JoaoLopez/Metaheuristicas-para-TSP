@@ -230,8 +230,8 @@ int melhorarSolucaoInstanciaTSPBuscaLocalMelhorAprimorante(InstanciaTSP* instanc
     return executarBuscaLocalMelhorAprimorante(instanciaTSP);
 }
 
-int solucionarInstanciaTSPGRASP(InstanciaTSP* instanciaTSP, int numeroRepeticoes, double alpha){
-    return executarGRASP(instanciaTSP, numeroRepeticoes, alpha);
+int solucionarInstanciaTSPGRASP(InstanciaTSP* instanciaTSP, Metricas* metricas, int numeroRepeticoes, double alpha){
+    return executarGRASP(instanciaTSP, metricas, numeroRepeticoes, alpha);
 }
 
 double calcularCustoSolucaoInstanciaTSP(InstanciaTSP* instanciaTSP, NoTour* tour){

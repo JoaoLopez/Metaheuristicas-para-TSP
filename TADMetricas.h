@@ -5,7 +5,6 @@
 #include <stdio.h>
 ///////////////////
 #include <stdlib.h>
-#include "TADInstanciaTSP.h"
 #include "TADTour.h"
 #include "TADGrafo.h"
 #include "TADErro.h"
@@ -15,6 +14,8 @@ typedef struct metricas{
     double *custosSolucoesAntigas;
     double tempoExecucao;
 }Metricas;
+
+#include "TADInstanciaTSP.h"
 
 Metricas* criarMetricas();
 void salvarMetricas(Metricas* metricas, char* nomeArq);

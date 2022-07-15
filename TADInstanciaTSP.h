@@ -4,6 +4,7 @@
 #include "TADGrafo.h"
 #include "TADPonto.h"
 #include "TADTour.h"
+#include "TADMetricas.h"
 #include "TADErro.h"
 #include <stdlib.h>
 #include <string.h>
@@ -37,7 +38,7 @@ int melhorarSolucaoInstanciaTSPBuscaLocalPrimeiroAprimorante(InstanciaTSP* insta
 
 int melhorarSolucaoInstanciaTSPBuscaLocalMelhorAprimorante(InstanciaTSP* instanciaTSP);
 
-int solucionarInstanciaTSPGRASP(InstanciaTSP* instanciaTSP, int numeroRepeticoes, double alpha);
+int solucionarInstanciaTSPGRASP(InstanciaTSP* instanciaTSP, Metricas* metricas, int numeroRepeticoes, double alpha);
 
 double calcularCustoSolucaoInstanciaTSP(InstanciaTSP* instanciaTSP, NoTour* tour);
 

@@ -1,6 +1,6 @@
 #include "GRASP.h"
 
-int executarGRASP(InstanciaTSP* instanciaTSP, int numeroRepeticoes, double alpha){
+int executarGRASP(InstanciaTSP* instanciaTSP, Metricas* metricas, int numeroRepeticoes, double alpha){
     NoTour* melhorSolucao = NULL;
     double melhorCusto = -1;
 
@@ -42,6 +42,13 @@ int executarGRASP(InstanciaTSP* instanciaTSP, int numeroRepeticoes, double alpha
         else{
             deletarTour(getMelhorSolucaoInstanciaTSP(instanciaTSP));
         }
+
+        //Registrando métricas
+        metricas->custosSolucoesAntigas[i] = getCustoMelhorSolucaoInstanciaTSP(instanciaTSP);
+        
+        time_t t = time(NULL);
+        struct tm* tempo = localtime(&t);
+        printf("Horário: %02d:%02d:%02d Iteração: %d\n", tempo->tm_hour, tempo->tm_min, tempo->tm_sec, i);
 
         //Resetando solução de instância TSP
         //Necessário pois a heurística construtiva só sobrescreverá a solução
