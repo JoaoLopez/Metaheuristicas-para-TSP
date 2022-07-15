@@ -112,19 +112,7 @@ int executarBuscaLocalMelhorAprimorante(InstanciaTSP* instanciaTSP){
     double custoSolucaoAntiga = -1, custoSolucaoNova = -1;
     int statusOperacao = -1;
 
-
-imprimirGrafo(instanciaTSP->grafo);
-
-
-
     do{
-
-
-
-printf("---------------------------- NOVA ITERAÇÃO ----------------------------\n");
-
-
-
         custoSolucaoAntiga = getCustoMelhorSolucaoInstanciaTSP(instanciaTSP);
         statusOperacao = encontrarMelhorAprimoranteBuscaLocalMovimento2Otimo(instanciaTSP);
         custoSolucaoNova = getCustoMelhorSolucaoInstanciaTSP(instanciaTSP);
@@ -134,10 +122,6 @@ printf("---------------------------- NOVA ITERAÇÃO ---------------------------
         }
     }while(custoSolucaoNova < custoSolucaoAntiga);
     
-
-imprimirTour(instanciaTSP->melhorSolucao);
-
-
     return OK;
 }
 
@@ -215,17 +199,7 @@ int encontrarMelhorAprimoranteBuscaLocalMovimento2Otimo(InstanciaTSP* instanciaT
             //Calculando saldo da nova solução
             saldoNovaSolucao = pesoAresta1 + pesoAresta2 - pesoNovaAresta1 - pesoNovaAresta2;
 
-
-printf("Cidades iniciais da troca: %d %d    Saldo: %lf\n", cidadeOrigemAresta1, cidadeOrigemAresta2, saldoNovaSolucao);
-
-
             if(saldoNovaSolucao > melhorSaldoNovaSolucao){
-
-
-printf("\nSolução Melhor Encontrada!\n\n");
-
-
-
                 melhorSaldoNovaSolucao = saldoNovaSolucao;
                 melhorCidadeOrigemAresta1 = cidadeOrigemAresta1;
                 melhorCidadeOrigemAresta2 = cidadeOrigemAresta2;
@@ -234,13 +208,6 @@ printf("\nSolução Melhor Encontrada!\n\n");
     }
 
     if(melhorSaldoNovaSolucao > 0){
-
-
-
-printf("\nSolução Atualizada!\n\n");
-
-
-
         if(realizarMovimento2otimo(melhorSolucao, melhorCidadeOrigemAresta1, melhorCidadeOrigemAresta2) != OK){
             return ERRO_REALIZAR_MOVIMENTO_2_OTIMO;
         }
