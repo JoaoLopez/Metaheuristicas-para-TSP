@@ -15,21 +15,8 @@ int executarGRASP(InstanciaTSP* instanciaTSP, int numeroRepeticoes, double alpha
         removerSolucaoInstanciaTSP(instanciaTSP);
     }
 
-
-printf("Custo Solução inicial: %lf\n", melhorCusto);
-printf("Solução Inicial:\n");
-imprimirTour(melhorSolucao);
-
-
     int statusOperacao = -1;
     for(int i = 0; i < numeroRepeticoes; i++){
-
-
-
-printf("------------------------------- Nova Iteração -------------------------------\n");
-
-
-
         statusOperacao = solucionarHeuristicaVizinhoMaisProximoDoisLadosRandomizada(instanciaTSP, alpha);
         if(statusOperacao != OK){
             deletarTour(melhorSolucao);
@@ -43,11 +30,6 @@ printf("------------------------------- Nova Iteração ------------------------
             removerSolucaoInstanciaTSP(instanciaTSP);
             return ERRO_EXECUTAR_BUSCA_LOCAL_INSTANCIA_TSP;
         }
-
-
-printf("Custo Nova Solução: %lf\n", getCustoMelhorSolucaoInstanciaTSP(instanciaTSP));
-
-
         if(getCustoMelhorSolucaoInstanciaTSP(instanciaTSP) < melhorCusto ||
         melhorCusto == -1){
             if(melhorSolucao != NULL){
@@ -56,15 +38,6 @@ printf("Custo Nova Solução: %lf\n", getCustoMelhorSolucaoInstanciaTSP(instanci
 
             melhorCusto = getCustoMelhorSolucaoInstanciaTSP(instanciaTSP);
             melhorSolucao = getMelhorSolucaoInstanciaTSP(instanciaTSP);
-
-
-printf("\nMelhor Solução Atualizada!\n");
-printf("Nova Solução:\n");
-imprimirTour(melhorSolucao);
-printf("\n");
-
-
-
         }
         else{
             deletarTour(getMelhorSolucaoInstanciaTSP(instanciaTSP));
@@ -75,12 +48,6 @@ printf("\n");
         //de instanciaTSP se encontrar uma solução melhor.
         removerSolucaoInstanciaTSP(instanciaTSP);
     }
-
-printf("------------------------------- FIM -------------------------------\n");
-printf("Custo da Melhor Solução Encontrada: %lf\n", melhorCusto);
-printf("Melhor Solução Encontrada:\n");
-imprimirTour(melhorSolucao);
-
 
     setMelhorSolucaoInstanciaTSP(instanciaTSP, melhorSolucao);
     return OK;
