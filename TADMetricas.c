@@ -9,7 +9,7 @@ Metricas* criarMetricas(){
 }
 
 void salvarMetricas(Metricas* metricas, char* nomeArq){
-    FILE* arq = fopen(nomeArq, "wt");
+    FILE* arq = fopen(nomeArq, "at");
     fprintf(arq, "Tempo de Execução: %lf\n", metricas->tempoExecucao);
     fprintf(arq, "Número de Soluções Antigas: %d\n", metricas->numSolucoesAntigas);
     fprintf(arq, "Custo das Soluções Antigas:\n");

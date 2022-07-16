@@ -9,122 +9,100 @@
 #include "TADErro.h"
 #include "TADInstanciaTSP.h"
 #include "util.h"
+#include "TADMetricas.h"
+
+void getNomeArqEntradaInst(char *nomeInstancia, char *arqEntrada){
+    strcpy(arqEntrada, nomeInstancia);
+    strcat(arqEntrada, ".tsp");
+}
+
+void getNomeArqSaidaInst(char *nomeInstancia, char *arqSaida){
+    strcpy(arqSaida, nomeInstancia);
+    strcat(arqSaida, "_Result_GRASP.sol");
+}
+
+void getNomeArqMetricasInst(char *nomeInstancia, char *arqMetricas){
+    strcpy(arqMetricas, nomeInstancia);
+    strcat(arqMetricas, "_Metricas_GRASP.sol");
+}
+
+InstanciaTSP* getInstanciaTSP(char* nomeInst, int carregarSolucaoSalva, int* statusOperacao){
+    char arqEntrada[100], arqSaida[100];
+
+    //Criando instância de TSP
+    printf("Criando instância TSP...\n");
+    getNomeArqEntradaInst(nomeInst, arqEntrada);
+    InstanciaTSP* instanciaTSP = criarInstanciaTSP(arqEntrada, statusOperacao);
+    if(*statusOperacao != OK)
+        return NULL;
+
+    //Carregando solução prévia, se o usuário requisitar
+    if(carregarSolucaoSalva){
+        printf("Carregando solução da instância TSP...\n");
+        getNomeArqSaidaInst(nomeInst, arqSaida);
+        *statusOperacao = carregarSolucaoInstanciaTSP(arqSaida, instanciaTSP);
+        if(*statusOperacao != OK){
+            deletarInstanciaTSP(instanciaTSP);
+            return NULL;
+        }
+    }
+    return instanciaTSP;
+}
 
 int main(int argc, char *argv[]){
     srand(time(NULL));
 
     InstanciaTSP* instanciaTSP = NULL;
-    double segCPUInicial, segSistemaInicial, segCPUFinal, segSistemaFinal, tempoExecucao, tempoExecucaoPrevio;
-    char nomeArquivo[100];
-    FILE* arquivoSaida;
-    int* statusOperacao = (int*) malloc(sizeof(int));
-    if(statusOperacao == NULL){
-        printf("ERRO: MEMÓRIA INSUFICIENTE!\n");
-        return ERRO_MEMORIA_INSUFICIENTE;
-    }
+    double segCPUInicial, segSistemaInicial, segCPUFinal, segSistemaFinal;
+    char arqSaida[100], arqMetricas[100];
+    FILE* arq;
+    int statusOperacao;
 
     int carregarSolucaoSalva = atoi(argv[1]);
     int numeroRepeticoes = atoi(argv[2]);
     double alpha = atof(argv[3]);
-
     for(int i = 4; i < argc; i++){
-
         printf("Experimento sendo processado: %s\n", argv[i]);
-        
-        //Criando instância de TSP
-        strcpy(nomeArquivo, argv[i]);
-        strcat(nomeArquivo, ".tsp");
-        printf("Criando instância TSP armazenada em %s\n", nomeArquivo);
-        instanciaTSP = criarInstanciaTSP(nomeArquivo, statusOperacao);
-        if(*statusOperacao == ERRO_ABRIR_ARQUIVO)    printf("ERRO: ERRO AO ABRIR ARQUIVO!\n");
-        if(*statusOperacao == ERRO_MEMORIA_INSUFICIENTE)    printf("ERRO: MEMÓRIA INSUFICIENTE!\n");
-        if(*statusOperacao == ERRO_CRIAR_GRAFO)   printf("ERRO: ERRO AO CRIAR O GRAFO DA INSTÂNCIA DE TSP!\n");
-        if(*statusOperacao != OK){
-            int codigoErro = *statusOperacao;
-            free(statusOperacao);
-            return codigoErro;
-        }
-
-        //Carregando solução prévia, se o usuário requisitar
-        if(carregarSolucaoSalva){
-            strcpy(nomeArquivo, argv[i]);
-            strcat(nomeArquivo, "GRASP");
-            strcat(nomeArquivo, "_");
-            strcat(nomeArquivo, argv[1]);
-            strcat(nomeArquivo, "_");
-            strcat(nomeArquivo, argv[3]);
-            strcat(nomeArquivo, ".sol");
-            printf("Carregando solução da instância TSP armazenada em %s\n", nomeArquivo);
-            *statusOperacao = carregarSolucaoInstanciaTSP(nomeArquivo, instanciaTSP);
-            if(*statusOperacao == ERRO_ABRIR_ARQUIVO)    printf("ERRO: ERRO AO ABRIR ARQUIVO!\n");
-            if(*statusOperacao == ERRO_MEMORIA_INSUFICIENTE)    printf("ERRO: MEMÓRIA INSUFICIENTE!\n");
-            if(*statusOperacao == ERRO_CARREGAR_SOLUCAO)    printf("ERRO: ERRO AO CARREGAR SOLUÇÃO!\n");
-            if(*statusOperacao != OK){
-                int codigoErro = *statusOperacao;
-                free(statusOperacao);
-                deletarInstanciaTSP(instanciaTSP);
-                return codigoErro;
-            }
-
-            strcpy(nomeArquivo, argv[i]);
-            strcat(nomeArquivo, "GRASP");
-            strcat(nomeArquivo, "_");
-            strcat(nomeArquivo, argv[1]);
-            strcat(nomeArquivo, "_");
-            strcat(nomeArquivo, argv[3]);
-            strcat(nomeArquivo, ".tempo");
-            FILE* arq = fopen(nomeArquivo, "rt");
-            if(arq != NULL){
-                fscanf(arq, "Tempo de execução: %lf", &tempoExecucaoPrevio);
-            }
-            else{
-                printf("ERRO AO ABRIR ARQUIVO COM TEMPO DE EXECUÇÃO PRÉVIO!");
-                free(statusOperacao);
-                deletarInstanciaTSP(instanciaTSP);
-                return ERRO_ABRIR_ARQUIVO;
-            }
-            fclose(arq);
-        }
+        instanciaTSP = getInstanciaTSP(argv[i], carregarSolucaoSalva, &statusOperacao);
+        if(statusOperacao == ERRO_ABRIR_ARQUIVO)    printf("ERRO: ERRO AO ABRIR ARQUIVO!\n");
+        if(statusOperacao == ERRO_MEMORIA_INSUFICIENTE)    printf("ERRO: MEMÓRIA INSUFICIENTE!\n");
+        if(statusOperacao == ERRO_CRIAR_GRAFO)   printf("ERRO: ERRO AO CRIAR O GRAFO DA INSTÂNCIA DE TSP!\n");
+        if(statusOperacao != OK)
+            return statusOperacao;        
 
         //GRASP
         printf("Executando GRASP...\n");
+        Metricas* metricas = criarMetricas();
+        metricas->numSolucoesAntigas = numeroRepeticoes;
+        metricas->custosSolucoesAntigas = (double*) malloc(numeroRepeticoes*sizeof(double));
+
         Tempo_CPU_Sistema(&segCPUInicial, &segSistemaInicial);
-        *statusOperacao = solucionarInstanciaTSPGRASP(instanciaTSP, numeroRepeticoes - carregarSolucaoSalva, alpha);
+        statusOperacao = solucionarInstanciaTSPGRASP(instanciaTSP, metricas, numeroRepeticoes, alpha);
         Tempo_CPU_Sistema(&segCPUFinal, &segSistemaFinal);
-        tempoExecucao = segCPUFinal - segCPUInicial;
 
-        if(carregarSolucaoSalva){
-            tempoExecucao = tempoExecucao + tempoExecucaoPrevio;
-        }
+        metricas->tempoExecucao = segCPUFinal - segCPUInicial;
 
-        if(*statusOperacao == ERRO_GERAR_SOLUCAO_INSTANCIA_TSP)    printf("ERRO: ERRO AO TENTAR GERAR UMA SOLUÇÃO DA INSTÂNCIA DE TSP!\n");
-        if(*statusOperacao == ERRO_EXECUTAR_BUSCA_LOCAL_INSTANCIA_TSP)   printf("ERRO: ERRO AO EXECUTAR BUSCA LOCAL!\n");
-        if(*statusOperacao != OK){
-            int codigoErro = *statusOperacao;
-            free(statusOperacao);
+        if(statusOperacao == ERRO_GERAR_SOLUCAO_INSTANCIA_TSP)    printf("ERRO: ERRO AO TENTAR GERAR UMA SOLUÇÃO DA INSTÂNCIA DE TSP!\n");
+        if(statusOperacao == ERRO_EXECUTAR_BUSCA_LOCAL_INSTANCIA_TSP)   printf("ERRO: ERRO AO EXECUTAR BUSCA LOCAL!\n");
+        if(statusOperacao != OK){
             deletarInstanciaTSP(instanciaTSP);
-            return codigoErro;
+            free(metricas->custosSolucoesAntigas);
+            return statusOperacao;
         }
 
-        //Salvando dados no arquivo de saída
-        strcpy(nomeArquivo, argv[i]);
-        strcat(nomeArquivo, "GRASP");
-        strcat(nomeArquivo, "_");
-        strcat(nomeArquivo, argv[2]);
-        strcat(nomeArquivo, "_");
-        strcat(nomeArquivo, argv[3]);
-        strcat(nomeArquivo, ".txt");
-        arquivoSaida = fopen(nomeArquivo, "wt");
-        salvarInstanciaTSP(instanciaTSP, arquivoSaida);
-        fprintf(arquivoSaida, "Tempo de execução: %lf", tempoExecucao);
-        fclose(arquivoSaida);
+        //Salvando dados e métricas em arquivos
+        getNomeArqSaidaInst(argv[i], arqSaida);
+        arq = fopen(arqSaida, "wt");
+        salvarInstanciaTSP(instanciaTSP, arq);
+        fclose(arq);
+        getNomeArqMetricasInst(argv[i], arqMetricas);
+        salvarMetricas(metricas, arqMetricas);
 
         //Deletando instância de TSP
         deletarInstanciaTSP(instanciaTSP);
         instanciaTSP = NULL;
     }
 
-    free(statusOperacao);
     return 0;
 }
 
