@@ -234,6 +234,10 @@ int solucionarInstanciaTSPGRASP(InstanciaTSP* instanciaTSP, Metricas* metricas, 
     return executarGRASP(instanciaTSP, metricas, numeroRepeticoes, alpha);
 }
 
+int solucionarInstanciaTSPILS(InstanciaTSP* instanciaTSP, Metricas* metricas, int numeroRepeticoes, double alpha){
+    return executarILS(instanciaTSP, metricas, numeroRepeticoes, alpha);
+}
+
 double calcularCustoSolucaoInstanciaTSP(InstanciaTSP* instanciaTSP, NoTour* tour){
     if(instanciaTSP->grafo == NULL || tour == NULL){
         return -1;
