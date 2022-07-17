@@ -26,8 +26,8 @@ int executarILS(InstanciaTSP* instanciaTSP, Metricas* metricas, int numeroRepeti
     }
 
     //solucao1 e custo1 armazenam a solução que o ILS está utilizando como base
-    NoTour *solucao1 = melhorSolucao, *solucoes_antigas[5], *aux;
-    double custo1 = melhorCusto, custos_antigos[5];
+    NoTour *solucao1 = melhorSolucao, *solucoes_antigas[8], *aux;
+    double custo1 = melhorCusto, custos_antigos[8];
     int repeticoes_sem_melhora = 0;
     for(int i = 0; i < numeroRepeticoes; i++){
         perturbarSolucao(instanciaTSP);
@@ -59,7 +59,7 @@ int executarILS(InstanciaTSP* instanciaTSP, Metricas* metricas, int numeroRepeti
         //Se a nova solução não foi a melhor de todas e ainda há espaço no histórico,
         //então ela é armazenada no histórico. A solução perturbada na próxima iteração
         //será a mesma que foi perturbada nessa iteração
-        else if(repeticoes_sem_melhora < 5){
+        else if(repeticoes_sem_melhora < 8){
             solucoes_antigas[repeticoes_sem_melhora] = getMelhorSolucaoInstanciaTSP(instanciaTSP);
             custos_antigos[repeticoes_sem_melhora] = getCustoMelhorSolucaoInstanciaTSP(instanciaTSP);
             repeticoes_sem_melhora++;
@@ -119,7 +119,7 @@ int executarILS(InstanciaTSP* instanciaTSP, Metricas* metricas, int numeroRepeti
 
 void perturbarSolucao(InstanciaTSP* instanciaTSP){
     int numCidades = getDimensaoInstanciaTSP(instanciaTSP);
-    double porcentModificacao = sortearNumeroAleatorio(10, 30)/100.0;
+    double porcentModificacao = sortearNumeroAleatorio(10, 20)/100.0;
     int numModificacoes = (int) (numCidades*porcentModificacao);
     int arestasSorteadas[numModificacoes];
     NoTour* subtoursGerados[numModificacoes+1];
