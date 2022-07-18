@@ -43,6 +43,8 @@ int solucionarInstanciaTSPGRASP(InstanciaTSP* instanciaTSP, Metricas* metricas, 
 
 int solucionarInstanciaTSPILS(InstanciaTSP* instanciaTSP, Metricas* metricas, int numeroRepeticoes, double alpha);
 
+int solucionarInstanciaTSPILSv2(InstanciaTSP* instanciaTSP, Metricas* metricas, int numeroRepeticoes, double alpha);
+
 double calcularCustoSolucaoInstanciaTSP(InstanciaTSP* instanciaTSP, NoTour* tour);
 
 void atualizarCustoMelhorSolucaoInstanciaTSPMovimentoBuscaLocal(InstanciaTSP* instanciaTSP, double saldoNovoCusto);
