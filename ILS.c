@@ -25,9 +25,6 @@ int executarILSv2(InstanciaTSP* instanciaTSP, Metricas* metricas, int numeroRepe
         return ERRO_COPIAR_TOUR;
     }
 
-printf("Custo Solução Inicial: %lf\n", melhorCusto);
-imprimirTour(melhorSolucao);
-
     //solucao1 e custo1 armazenam a solução que o ILS está utilizando como base
     NoTour *solucao1 = melhorSolucao, *solucoes_antigas[8], *aux;
     double custo1 = melhorCusto, custos_antigos[8];
@@ -45,11 +42,8 @@ imprimirTour(melhorSolucao);
             return ERRO_EXECUTAR_BUSCA_LOCAL_INSTANCIA_TSP;
         }
 
-printf("Custo Solução Encontrada: %lf\n", getCustoMelhorSolucaoInstanciaTSP(instanciaTSP));
-
         //Se a nova solução for a melhor obtida até agora será a utilizada na próxima perturbação
         if(getCustoMelhorSolucaoInstanciaTSP(instanciaTSP) < melhorCusto){
-printf("Melhorei a Solução\n");
             deletarTour(melhorSolucao);
             if(solucao1 != melhorSolucao)
                 deletarTour(solucao1);
@@ -61,16 +55,11 @@ printf("Melhorei a Solução\n");
             melhorCusto = getCustoMelhorSolucaoInstanciaTSP(instanciaTSP);
             solucao1 = melhorSolucao;
             custo1 = melhorCusto;
-
-printf("Solucao1 atualizada!\n");
-imprimirTour(solucao1);
-
         }
         //Se a nova solução não foi a melhor de todas e ainda há espaço no histórico,
         //então ela é armazenada no histórico. A solução perturbada na próxima iteração
         //será a mesma que foi perturbada nessa iteração
         else if(repeticoes_sem_melhora < 8){
-printf("Adicionei ao histórico\n");
             solucoes_antigas[repeticoes_sem_melhora] = getMelhorSolucaoInstanciaTSP(instanciaTSP);
             custos_antigos[repeticoes_sem_melhora] = getCustoMelhorSolucaoInstanciaTSP(instanciaTSP);
             repeticoes_sem_melhora++;
@@ -79,7 +68,6 @@ printf("Adicionei ao histórico\n");
         //então uma nova solução será gerada pela heurística do vizinho mais pŕoximo dos dois lados randomizada.
         //Essa nova solução será perturbada na próxima iteração
         else{
-printf("Gerei uma nova solução\n");
             deletarTour(getMelhorSolucaoInstanciaTSP(instanciaTSP));
             if(melhorSolucao != solucao1)
                 deletarTour(solucao1);
@@ -101,10 +89,6 @@ printf("Gerei uma nova solução\n");
             }
             custo1 = getCustoMelhorSolucaoInstanciaTSP(instanciaTSP);
             solucao1 = getMelhorSolucaoInstanciaTSP(instanciaTSP);
-
-printf("Solucao1 atualizada!\n");
-imprimirTour(solucao1);
-
         }
         aux = copiarTour(solucao1, &statusOperacao);
         if(statusOperacao != OK){
